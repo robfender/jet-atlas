@@ -1,0 +1,295 @@
+{
+  "ngc6251-lobes": {
+    "image": "assets/ngc6251-lobes.png",
+    "width": 330,
+    "height": 667,
+    "core": [
+      237,
+      390
+    ],
+    "rgPerPixelProjected": 113519834.56986016,
+    "inclination": null,
+    "preparation": {
+      "reference": "Cantwell2020Fig2; Fig7 source selection aperture",
+      "render_page_dimensions": [
+        1273,
+        1800
+      ],
+      "crop_page_pixels": [
+        306,
+        332,
+        1049,
+        1075
+      ],
+      "core_page_pixels": [
+        695.5078968176217,
+        665.375404163552
+      ],
+      "core_error_page_pixels": 3,
+      "rotation_clockwise_deg": 117.84949469887877,
+      "pc_per_native_pixel": 3259.536253157527,
+      "axis_fit": "isotropic TAN fit to labelled RA/Dec edge ticks; approximate ~1% scale",
+      "aperture_polygon_page_pixels": [
+        [
+          685,
+          590
+        ],
+        [
+          780,
+          535
+        ],
+        [
+          835,
+          550
+        ],
+        [
+          850,
+          590
+        ],
+        [
+          920,
+          625
+        ],
+        [
+          995,
+          675
+        ],
+        [
+          1015,
+          715
+        ],
+        [
+          995,
+          755
+        ],
+        [
+          920,
+          750
+        ],
+        [
+          850,
+          720
+        ],
+        [
+          800,
+          705
+        ],
+        [
+          720,
+          710
+        ],
+        [
+          670,
+          705
+        ],
+        [
+          640,
+          740
+        ],
+        [
+          620,
+          790
+        ],
+        [
+          590,
+          810
+        ],
+        [
+          565,
+          825
+        ],
+        [
+          560,
+          890
+        ],
+        [
+          505,
+          905
+        ],
+        [
+          430,
+          895
+        ],
+        [
+          385,
+          870
+        ],
+        [
+          355,
+          820
+        ],
+        [
+          375,
+          775
+        ],
+        [
+          420,
+          750
+        ],
+        [
+          475,
+          725
+        ],
+        [
+          545,
+          725
+        ],
+        [
+          600,
+          700
+        ],
+        [
+          655,
+          675
+        ]
+      ],
+      "display": "greyscale plus original contour geometry; unrelated field sources outside source aperture masked"
+    }
+  },
+  "1e1740": {
+    "image": "assets/1e1740.png",
+    "width": 80,
+    "height": 552,
+    "core": [
+      42,
+      303
+    ],
+    "rgPerPixelProjected": 10501398144.22782,
+    "inclination": null,
+    "preparation": {
+      "reference": "Luque-Escamilla2015Fig2, 1992panel; discoveryMirabel1992",
+      "source_embedded_raster_dimensions": [
+        1526,
+        700
+      ],
+      "crop_pixels": [
+        100,
+        35,
+        359,
+        590
+      ],
+      "core_native_pixels": [
+        235.0,
+        274.0
+      ],
+      "core_error_native_pixels": 4,
+      "rotation_clockwise_deg": 159.8832748315445,
+      "arcsec_per_native_pixel": 0.12195121951219512,
+      "pc_per_native_pixel": 0.005025507670040221,
+      "distance_kpc_adopted": 8.5,
+      "mass_Msun_adopted": 10,
+      "inclination": "unknown jet inclination, retain projection",
+      "aperture_polygon_native_pixels": [
+        [
+          286,
+          35
+        ],
+        [
+          313,
+          35
+        ],
+        [
+          332,
+          85
+        ],
+        [
+          332,
+          140
+        ],
+        [
+          310,
+          200
+        ],
+        [
+          280,
+          239
+        ],
+        [
+          264,
+          275
+        ],
+        [
+          257,
+          305
+        ],
+        [
+          238,
+          340
+        ],
+        [
+          226,
+          378
+        ],
+        [
+          217,
+          416
+        ],
+        [
+          200,
+          457
+        ],
+        [
+          190,
+          503
+        ],
+        [
+          178,
+          548
+        ],
+        [
+          156,
+          567
+        ],
+        [
+          137,
+          552
+        ],
+        [
+          133,
+          515
+        ],
+        [
+          142,
+          476
+        ],
+        [
+          156,
+          443
+        ],
+        [
+          173,
+          400
+        ],
+        [
+          187,
+          355
+        ],
+        [
+          204,
+          320
+        ],
+        [
+          215,
+          281
+        ],
+        [
+          216,
+          251
+        ],
+        [
+          232,
+          220
+        ],
+        [
+          251,
+          177
+        ],
+        [
+          266,
+          126
+        ]
+      ],
+      "display": "original published positive jet contours, orange; frame, beam, year label and separated negative-noise islands excluded"
+    }
+  }
+}

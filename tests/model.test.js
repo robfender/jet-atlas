@@ -5,7 +5,7 @@ import {DEFAULTS,freshState,rgPerPixel,unitsPerPixel,extent,fitRange,validRange,
 const sources=JSON.parse(readFileSync(new URL('../sources.json',import.meta.url))).sources;
 test('physical image scales reproduce the vetted montage',()=>{
   const expected={j1727:5628809.139839726,cygx1:1148744.8472807263,ngc6251:25797769.933249675,cena:15228391.238,m87:153451.02732463548};
-  for(const s of sources)assert.ok(Math.abs(rgPerPixel(s,'deprojected')/expected[s.id]-1)<1e-5,s.id);
+  for(const s of sources.filter(s=>s.id in expected))assert.ok(Math.abs(rgPerPixel(s,'deprojected')/expected[s.id]-1)<1e-5,s.id);
 });
 test('M87 halo remains projected in either convention',()=>{const s=sources.find(s=>s.id==='m87');assert.equal(rgPerPixel(s,'projected'),rgPerPixel(s,'deprojected'));});
 test('deprojection uses the adopted angle once',()=>{const s=sources[0];assert.ok(Math.abs(rgPerPixel(s,'deprojected')*Math.sin(40*Math.PI/180)-s.rgPerPixelProjected)<1e-8);});
@@ -66,4 +66,13 @@ test('insets stay inside the main plot and never cover the source or core',()=>{
     else assert.ok(p.top+p.height<imageTop&&p.top+p.height<core);
   }
   assert.equal(insetPlacement(0,800,300),null);
+});
+
+test('new extended sources recover their documented physical calibrations',()=>{
+  const ann=sources.find(s=>s.id==='1e1740'),lobes=sources.find(s=>s.id==='ngc6251-lobes');
+  assert.ok(Math.abs(unitsPerPixel(ann,'projected','physical')-8500/206264.806247*15/123)<1e-10);
+  assert.ok(Math.abs(unitsPerPixel(lobes,'projected','physical')-3259.536253157527)<1e-5);
+  for(const s of [ann,lobes])assert.equal(rgPerPixel(s,'projected'),rgPerPixel(s,'deprojected'));
+  assert.ok(ann.height*unitsPerPixel(ann,'projected','physical')>2.5);
+  assert.ok(lobes.height*unitsPerPixel(lobes,'projected','physical')>1.7e6);
 });

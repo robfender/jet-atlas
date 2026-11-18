@@ -77,9 +77,49 @@
       "inclination": 27.5
     },
     {
+      "id": "1e1740",
+      "name": "1E 1740.7−2942",
+      "shortName": "Great Annihilator",
+      "kind": "Stellar-mass black-hole candidate",
+      "band": "VLA · 4.8 GHz · 1992",
+      "color": "#ff9e50",
+      "lightColor": "#ae5711",
+      "mass": 10,
+      "massLabel": "10 M☉ (adopted)",
+      "distance": "8.5 kpc (adopted)",
+      "inclinationLabel": "Jet angle unknown · projected",
+      "eddington": "∼10⁻² · hard state",
+      "inset": 5,
+      "notes": "The “Great Annihilator”, the original microquasar discovered by Mirabel et al. (1992). The image is the April 1992 epoch reprocessed by Luque-Escamilla et al. (2015), showing the arcminute-scale jet/lobe structure. Mass and distance are adopted comparison values, not dynamical measurements. The jet inclination is uncertain, so its size stays projected in both modes. The northern lobe is rotated downward.",
+      "calibration": "Luque-Escamilla et al. (2015), Fig. 2, left 1992 panel. Declination ticks: 15 arcsec = 123 embedded-raster pixels; native angular pixel size 0.121951 arcsec. At the adopted 8.5 kpc this is 0.0050255 pc/pixel. Nucleus is the central radio-contour peak, within ~4 pixels of the quoted position. Only the jet contour aperture is retained; axes, beam and separated noise islands are removed. The 2015 paper discusses a model-dependent ~5-kpc distance alternative. Approximate Eddington ratio is representative of later hard-state measurements, not simultaneous with the 1992 radio image.",
+      "references": [
+        {
+          "label": "Mirabel et al. (1992) · discovery",
+          "url": "https://doi.org/10.1038/358215a0"
+        },
+        {
+          "label": "Luque-Escamilla et al. (2015) · radio image",
+          "url": "https://doi.org/10.1051/0004-6361/201527238"
+        },
+        {
+          "label": "Bhuvana et al. (2023) · hard-state luminosity",
+          "url": "https://arxiv.org/abs/2302.03273"
+        }
+      ],
+      "image": "assets/1e1740.png",
+      "width": 80,
+      "height": 552,
+      "core": [
+        42,
+        303
+      ],
+      "rgPerPixelProjected": 10501398144.22782,
+      "inclination": null
+    },
+    {
       "id": "ngc6251",
-      "name": "NGC 6251",
-      "shortName": "NGC 6251",
+      "name": "NGC 6251 (jet)",
+      "shortName": "NGC 6251 (jet)",
       "kind": "Active galactic nucleus",
       "band": "VLA · radio",
       "color": "#ff6666",
@@ -109,7 +149,45 @@
         19
       ],
       "rgPerPixelProjected": 12898884.966624836,
-      "inclination": 30
+      "inclination": 30,
+      "objectId": "ngc6251"
+    },
+    {
+      "id": "ngc6251-lobes",
+      "name": "NGC (lobes)",
+      "shortName": "NGC 6251 lobes",
+      "kind": "Active galactic nucleus",
+      "band": "LOFAR · 150 MHz · jet + lobes",
+      "color": "#ff74ba",
+      "lightColor": "#a93072",
+      "mass": 600000000.0,
+      "massLabel": "6 × 10⁸ M☉",
+      "distance": "0.498 kpc / arcsec",
+      "inclinationLabel": "Outer lobes unknown · projected",
+      "eddington": "∼10⁻⁴ · nucleus",
+      "inset": 5,
+      "notes": "NGC 6251: full LOFAR view of the jet, both outer lobes and the faint northern extension. This is a separate, much larger component from the VLA jet entry. The outer structures retain their projected dimensions; the inner jet’s adopted 30° angle is not applied to them. The lobes integrate past activity over hundreds of millions of years.",
+      "calibration": "Cantwell et al. (2020), Fig. 2; source aperture guided by their Fig. 7 masks unrelated field sources. Approximate isotropic TAN calibration fitted to the RA/Dec ticks, using the paper’s 0.498 kpc/arcsec; 3.260 kpc per rendered pixel (~1% scale precision). Core from the catalogued nucleus, accurate to approximately 3 rendered pixels. The full bent LOFAR extent is not forced to the historical 1.7-Mpc span.",
+      "references": [
+        {
+          "label": "Cantwell et al. (2020) · full LOFAR source",
+          "url": "https://doi.org/10.1093/mnras/staa1160"
+        },
+        {
+          "label": "Ho (2009) · nuclear luminosity",
+          "url": "https://doi.org/10.1088/0004-637X/699/1/626"
+        }
+      ],
+      "image": "assets/ngc6251-lobes.png",
+      "width": 330,
+      "height": 667,
+      "core": [
+        237,
+        390
+      ],
+      "rgPerPixelProjected": 113519834.56986016,
+      "inclination": null,
+      "objectId": "ngc6251"
     },
     {
       "id": "cena",

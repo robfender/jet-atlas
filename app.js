@@ -1,4 +1,4 @@
-import {freshState,unitsPerPixel,extent,fitRange,validRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=3';
+import {freshState,unitsPerPixel,extent,fitRange,validRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=4';
 
 const $=id=>document.getElementById(id);
 const escapeXML=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -22,7 +22,7 @@ function commit(){
   $('method-note').textContent=physical?'Common physical distance in parsecs. Labelled core markers indicate jets smaller than one pixel; marker sizes do not represent jet sizes. Colours and brightness are illustrative.':'Images share a scale in gravitational radii, not a brightness scale. Colours are illustrative; different observations have different resolutions and sensitivities.';
   $('deprojected').setAttribute('aria-pressed',String(state.projection==='deprojected'));
   $('projected').setAttribute('aria-pressed',String(state.projection==='projected'));
-  $('projection-note').textContent=state.projection==='deprojected'?'Adopted inclinations; M87 halo stays projected.':'All distances projected onto the plane of the sky.';
+  $('projection-note').textContent=state.projection==='deprojected'?'Adopted inclinations; unknown angles stay projected.':'All distances projected onto the plane of the sky.';
   $('insets').checked=state.insets;$('information').checked=state.information;
   $('selected-count').textContent=`${state.selected.length} / ${sources.length}`;
   $('fit').disabled=!state.selected.length;
@@ -45,10 +45,10 @@ function renderFigure(){
   if(!list.length){$('figure').innerHTML='<div class="empty"><strong>A universe of scales.</strong><p>Select a source to start comparing.</p></div>';return;}
   const col=270,W=95+list.length*col,top=92,plotH=620,bottom=top+plotH;
   const scale=plotH/(state.above+state.below),core=top+state.above*scale;
-  const hasInsets=state.insets&&(physical||list.some(s=>s.inset));
+  const hasInsets=state.insets;
   const footerY=bottom+75;
   const H=state.information?footerY+135:bottom+45;
-  const parts=[`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="plot-title plot-desc"><title id="plot-title">Black hole low Eddington / hard state jets across the mass scale</title><desc id="plot-desc">${escapeXML(list.map(s=>s.name).join(', '))}. Shared size scale: ${unit}. ${state.projection} distances; M87 halo always projected. R_G equals GM over c squared. Core markers are not jet sizes. Colours do not compare brightness.</desc><defs><filter id="light-emission" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.58"/><feFuncG type="linear" slope="0.58"/><feFuncB type="linear" slope="0.58"/><feFuncA type="gamma" amplitude="1" exponent="0.6" offset="0"/></feComponentTransfer></filter></defs><rect width="${W}" height="${H}" fill="${p.bg}"/><g font-family="Arial,Helvetica,sans-serif">`];
+  const parts=[`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="plot-title plot-desc"><title id="plot-title">Black hole low Eddington / hard state jets across the mass scale</title><desc id="plot-desc">${escapeXML(list.map(s=>s.name).join(', '))}. Shared size scale: ${unit}. ${state.projection} distances; M87 halo, NGC 6251 lobes and 1E 1740 stay projected. R_G equals GM over c squared. Core markers are not jet sizes. Colours do not compare brightness.</desc><defs><filter id="light-emission" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.58"/><feFuncG type="linear" slope="0.58"/><feFuncB type="linear" slope="0.58"/><feFuncA type="gamma" amplitude="1" exponent="0.6" offset="0"/></feComponentTransfer></filter></defs><rect width="${W}" height="${H}" fill="${p.bg}"/><g font-family="Arial,Helvetica,sans-serif">`];
   const text=(x,y,str,size=12,color=p.muted,anchor='middle',extra='')=>parts.push(`<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="${size}" fill="${color}" ${extra}>${escapeXML(str)}</text>`);
   const image=(s,x,y,k)=>{
     const w=s.width*k,h=s.height*k;
@@ -65,7 +65,7 @@ function renderFigure(){
   list.forEach((s,i)=>{
     const left=95+i*col,cx=left+col/2,color=sourceColor(s),k=unitsPerPixel(s,state.projection,state.units)*scale;
     text(cx,35,s.name,17,color);text(cx,58,s.band,10);
-    if(s.id==='m87')text(cx,75,'PROJECTED HALO',8,p.muted);
+    if(s.inclination===null)text(cx,75,s.id==='m87'?'PROJECTED HALO':'PROJECTED',8,p.muted);
     parts.push(`<defs><clipPath id="plot-${s.id}"><rect x="${left+5}" y="${top}" width="${col-10}" height="${plotH}"/></clipPath></defs>`);
     parts.push(`<g clip-path="url(#plot-${s.id})">${image(s,cx,core,k)}</g>`);
     const tiny=s.height*k<1;
@@ -76,11 +76,11 @@ function renderFigure(){
     const e=extent(s,state.projection,state.units),clipped=e.below>state.below*1.001||e.above>state.above*1.001||s.width*k>col-10;
     if(clipped)text(cx,bottom+19,'Image extends beyond view',9,color);
     const placement=insetPlacement(core-s.core[1]*k,core+(s.height-s.core[1])*k,core,top,bottom);
-    if(hasInsets&&placement&&(s.inset||(physical&&s.height*k<120))){
+    if(hasInsets&&placement&&(s.inset||s.height*k<40||(physical&&s.height*k<120))){
       const insetTop=placement.top,insetH=placement.height,bodyH=insetH-95;
       // Uniform magnification only; changing range never changes the common calibration.
       const available=Math.min((col-34)/(s.width*k),bodyH/(s.height*k));
-      const zoom=physical?niceMagnification(available*.95):Math.min(s.inset,Math.floor(available*10)/10);
+      const zoom=(physical||s.height*k<20)?niceMagnification(available*.95):Math.min(s.inset||5,Math.floor(available*10)/10);
       if(zoom>1){
         const bw=Math.max(16,Math.min(s.width*k+12,col-20)),bh=Math.max(20,Math.min(s.height*k+12,plotH));
         const boxY=Math.max(top,Math.min(core-s.core[1]*k-6,bottom-bh));
@@ -104,6 +104,7 @@ function renderFigure(){
     }
   });
   parts.push('</g></svg>');$('figure').innerHTML=parts.join('');
+  $('figure').querySelector('svg').style.minWidth=Math.max(650,list.length*190)+'px';
 }
 function formatPower(v){const exp=Math.round(Math.log10(v));return '10'+String(exp).replace(/./g,d=>d==='-'?'⁻':'⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]);}
 function formatNumber(v){return v!==0&&Math.abs(v)<.001?Number(v.toPrecision(3)).toExponential():v.toLocaleString('en-US',{maximumFractionDigits:5});}
@@ -185,10 +186,11 @@ async function exportFigure(format){
 }
 async function init(){
   try{
-    const response=await fetch('sources.json');if(!response.ok)throw Error('Could not load source catalogue');
+    const response=await fetch('sources.json?v=4');if(!response.ok)throw Error('Could not load source catalogue');
     sources=(await response.json()).sources;
-    document.querySelector('.edition').textContent=`01 / ${sources.length} SOURCES`;
-    document.querySelector('.lede').textContent=`Real radio images. ${sources.length} black holes. Compare gravitational radii or physical size.`;
+    document.querySelector('.edition').textContent=`01 / ${sources.length} VIEWS`;
+    const objectCount=new Set(sources.map(s=>s.objectId||s.id)).size;
+    document.querySelector('.lede').textContent=`Real radio images. ${sources.length} views of ${objectCount} black holes. Compare gravitational radii or physical size.`;
     state=stateFromHash(location.hash,sources.map(s=>s.id));
     // Preload every selected image before allowing an export.
     await Promise.all(sources.map(s=>{const image=new Image();image.src=s.image;return image.decode();}));

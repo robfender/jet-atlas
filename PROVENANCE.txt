@@ -37,3 +37,6 @@ Native masks/colours are deterministically rendered from source figures with iso
 
 CONTACT
 Rob.Fender@physics.ox.ac.uk, public professional contact verified at https://www.physics.ox.ac.uk/our-people/fender
+
+PHYSICAL SIZE MODE - 18 November 2026
+Each source converts R_G per pixel to parsecs per pixel using its own mass and GM_sun/c^2 =4.785560552051379e-14pc. This recovers the original angular or printed physical-bar calibration. Projection remains independent; no additional mass-normalisation or arbitrary scaling. Sources below one plot pixel are labelled core-position markers, not resolved emission. Inset magnifications and physical pc/kpc/AU bars are explicit; physical mode starts without insets.

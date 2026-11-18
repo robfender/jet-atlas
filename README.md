@@ -1,5 +1,7 @@
 # Jet Atlas
 
+**Black hole low Eddington / hard state jets across the mass scale**
+
 An interactive comparison of observed black-hole outflows, curated by Rob Fender.
 
 **Website:** https://robfender.github.io/jet-atlas/
@@ -54,3 +56,9 @@ This repository is a static GitHub Pages site. Publish the `main` branch, root f
 Scientific images and observations are credited to their original authors in the source cards and `PROVENANCE.txt`; underlying image rights remain with their respective rights holders. The interface does not imply endorsement by those authors. Do not treat the repository as relicensing third-party scientific imagery.
 
 Suggestions: Rob.Fender@physics.ox.ac.uk. Please include the source name, paper and a calibrated image or public data link.
+
+## Physical size mode
+
+The size switch compares either R_G (the default, plotted in billions) or actual physical distance in parsecs. The conversion is per source: projected pc/pixel = projected R_G/pixel × (4.785560552051379e-14 pc/Msun) × mass/Msun. Inclination corrections remain an independent choice, applied exactly once in either mode. M87 halo remains projected.
+
+Switching units auto-fits the selected sources. Physical mode initially disables insets to show the size contrast directly. A source less than one figure pixel tall is represented by a labelled core marker; the marker radius is an annotation and not the emission extent. Re-enabling insets provides explicitly magnified images with their own pc/kpc/AU bars. Share URLs, range validation and SVG/PNG exports carry the unit mode; old URLs without a units parameter retain the original R_G interpretation.

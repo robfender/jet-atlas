@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0c1014">
-  <meta name="description" content="Compare observed black-hole jets on a shared gravitational-radius scale. An interactive atlas by Rob Fender.">
-  <title>Jet Atlas · Rob Fender</title>
+  <meta name="description" content="Compare black hole low Eddington / hard state jets across the mass scale, in gravitational radii or physical distance.">
+  <title>Black hole low Eddington / hard state jets across the mass scale</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
-  <script type="module" src="app.js"></script>
+  <link rel="stylesheet" href="styles.css?v=2">
+  <script type="module" src="app.js?v=2"></script>
 </head>
 <body>
   <header class="masthead">
@@ -17,7 +17,7 @@
   </header>
   <main>
     <section class="intro">
-      <div><p class="eyebrow">A common measure, across black-hole masses</p><h1>Jets, to scale.</h1><p class="lede">Real radio images. Five black holes. One gravitational-radius ruler.</p></div>
+      <div><p class="eyebrow">A common measure, across black-hole masses</p><h1>Black hole low Eddington / hard state jets across the mass scale</h1><p class="lede">Real radio images. Five black holes. Compare gravitational radii or physical size.</p></div>
       <div class="definition"><span>THE UNIT</span><strong>R<sub>G</sub> = GM / c²</strong><p>Distance measured in the natural length scale of each black hole.</p></div>
     </section>
     <div class="workspace">
@@ -30,10 +30,13 @@
         </section>
         <section class="control-group">
           <h2>02 <span>Shared scale</span></h2>
+          <div class="field-label">Compare sizes in</div>
+          <div class="segmented" role="group" aria-label="Size units"><button type="button" id="units-rg" aria-pressed="true">R<sub>G</sub></button><button type="button" id="units-physical" aria-pressed="false">Physical size</button></div>
+          <p class="hint">Physical size uses parsecs. Switching units fits the selected sources.</p>
           <div class="field-label">Distance convention</div>
           <div class="segmented" role="group" aria-label="Distance convention"><button type="button" id="deprojected" aria-pressed="true">Deprojected</button><button type="button" id="projected" aria-pressed="false">Projected</button></div>
           <p id="projection-note" class="hint">Adopted inclinations; M87 halo stays projected.</p>
-          <div class="range-grid"><label>Above core<input id="range-above" type="number" min="0" max="10000" step="any" value="3"><span>× 10⁹ R<sub>G</sub></span></label><label>Below core<input id="range-below" type="number" min="0" max="10000" step="any" value="6.2"><span>× 10⁹ R<sub>G</sub></span></label></div>
+          <div class="range-grid"><label>Above core<input id="range-above" type="number" min="0" max="10000" step="any" value="3"><span class="range-unit">× 10⁹ R<sub>G</sub></span></label><label>Below core<input id="range-below" type="number" min="0" max="10000" step="any" value="6.2"><span class="range-unit">× 10⁹ R<sub>G</sub></span></label></div>
           <p id="range-error" role="alert" class="error" hidden></p>
           <button type="button" id="fit" class="wide-button">↔ Fit selected sources</button>
         </section>
@@ -53,7 +56,7 @@
         <section id="source-details" aria-label="Source details"></section>
       </section>
     </div>
-    <details class="methods"><summary>How to read this comparison <span>+</span></summary><div><p>Each radio nucleus is placed on the dotted core line. The images are rotated so their principal outflow axes run vertically; north is not necessarily upward. In the deprojected view, distances use the adopted inclination for each source. M87’s radio halo remains projected because the inner jet’s measured inclination does not fix the halo’s three-dimensional orientation.</p><p>The ruler uses R<sub>G</sub> = GM/c², not the Schwarzschild radius 2R<sub>G</sub>. Masses, distances and inclinations are fixed to the documented values below. Displayed widths use the same image magnification as lengths; this is an illustrative image comparison, not a reconstruction of intrinsic transverse jet widths.</p><p>These observations trace different components: compact jets, knots, inner lobes and a radio halo. Their detected endpoints depend on sensitivity. The Eddington ratios are approximate radiative L<sub>bol</sub>/L<sub>Edd</sub>, not jet efficiencies; J1727’s value refers to the peak hard state, not its imaging epoch.</p></div></details>
+    <details class="methods"><summary>How to read this comparison <span>+</span></summary><div><p>Each radio nucleus is placed on the dotted core line. The images are rotated so their principal outflow axes run vertically; north is not necessarily upward. In the deprojected view, distances use the adopted inclination for each source. M87’s radio halo remains projected because the inner jet’s measured inclination does not fix the halo’s three-dimensional orientation.</p><p>The size switch changes the calibration of each image using its own black-hole mass: physical length = (length in R<sub>G</sub>) × GM/c². Physical distances use parsecs (1 pc ≈ 206,265 AU). Switching units fits the selected sources and starts with enlarged insets off in the physical view. Sources smaller than a pixel are indicated by labelled core markers, not artificially enlarged emission. Optional insets carry their own magnification and scale.</p><p>The ruler uses R<sub>G</sub> = GM/c², not the Schwarzschild radius 2R<sub>G</sub>. Masses, distances and inclinations are fixed to the documented values below. Displayed widths use the same image magnification as lengths; this is an illustrative image comparison, not a reconstruction of intrinsic transverse jet widths.</p><p>These observations trace different components: compact jets, knots, inner lobes and a radio halo. Their detected endpoints depend on sensitivity. The Eddington ratios are approximate radiative L<sub>bol</sub>/L<sub>Edd</sub>, not jet efficiencies; J1727’s value refers to the peak hard state, not its imaging epoch.</p></div></details>
   </main>
   <footer class="site-footer"><span>A growing collection, curated by Rob Fender.</span><span>Have a source in mind? <a href="mailto:Rob.Fender@physics.ox.ac.uk?subject=Jet%20Atlas%20source%20suggestion">Email Rob</a> with the image and reference.</span><a href="https://github.com/robfender/jet-atlas" target="_blank" rel="noreferrer">Data &amp; references ↗</a></footer>
   <div id="toast" role="status" aria-live="polite"></div>

@@ -1,4 +1,4 @@
-import {BILLION,freshState,rgPerPixel,extent,fitRange,validRange,tickStep,stateToHash,stateFromHash} from './model.js';
+import {freshState,unitsPerPixel,extent,fitRange,validRange,tickStep,stateToHash,stateFromHash} from './model.js?v=2';
 
 const $=id=>document.getElementById(id);
 const escapeXML=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -13,6 +13,13 @@ function commit(){
   document.documentElement.dataset.theme=state.theme;
   $('theme').textContent=state.theme==='dark'?'Light theme ◐':'Dark theme ◑';
   $('range-above').value=state.above;$('range-below').value=state.below;
+  const physical=state.units==='physical';
+  $('units-rg').setAttribute('aria-pressed',String(!physical));
+  $('units-physical').setAttribute('aria-pressed',String(physical));
+  for(const el of document.querySelectorAll('.range-unit'))el.innerHTML=physical?'pc':'× 10⁹ R<sub>G</sub>';
+  for(const id of ['range-above','range-below'])$(id).max=physical?'1000000000':'10000';
+  document.querySelector('.definition').innerHTML=physical?'<span>THE UNIT</span><strong>Physical distance</strong><p>Parsecs: 1 pc ≈ 206,265 AU. Each image uses its own black-hole mass to convert from R<sub>G</sub>.</p>':'<span>THE UNIT</span><strong>R<sub>G</sub> = GM / c²</strong><p>Distance measured in the natural length scale of each black hole.</p>';
+  $('method-note').textContent=physical?'Common physical distance in parsecs. Labelled core markers indicate jets smaller than one pixel; marker sizes do not represent jet sizes. Colours and brightness are illustrative.':'Images share a scale in gravitational radii, not a brightness scale. Colours are illustrative; different observations have different resolutions and sensitivities.';
   $('deprojected').setAttribute('aria-pressed',String(state.projection==='deprojected'));
   $('projected').setAttribute('aria-pressed',String(state.projection==='projected'));
   $('projection-note').textContent=state.projection==='deprojected'?'Adopted inclinations; M87 halo stays projected.':'All distances projected onto the plane of the sky.';
@@ -32,51 +39,58 @@ function renderChoices(){
 }
 function renderFigure(){
   const list=selected(),p=palettes[state.theme];
-  $('view-label').innerHTML=(state.projection==='deprojected'?'Deprojected':'Projected')+' · shared R<sub>G</sub> scale';
-  $('figure-summary').textContent=`${list.length} source${list.length===1?'':'s'} · −${state.above} to +${state.below} × 10⁹ Rɢ`;
+  const physical=state.units==='physical',unit=physical?'pc':'× 10⁹ Rɢ';
+  $('view-label').innerHTML=(state.projection==='deprojected'?'Deprojected':'Projected')+(physical?' · physical size (pc)':' · shared R<sub>G</sub> scale');
+  $('figure-summary').textContent=`${list.length} source${list.length===1?'':'s'} · −${formatNumber(state.above)} to +${formatNumber(state.below)} ${unit}`;
   if(!list.length){$('figure').innerHTML='<div class="empty"><strong>A universe of scales.</strong><p>Select a source to start comparing.</p></div>';return;}
   const col=270,W=95+list.length*col,top=92,plotH=620,bottom=top+plotH;
   const scale=plotH/(state.above+state.below),core=top+state.above*scale;
-  const hasInsets=state.insets&&list.some(s=>s.inset),insetTop=bottom+55,insetH=330;
+  const hasInsets=state.insets&&(physical||list.some(s=>s.inset)),insetTop=bottom+55,insetH=330;
   const footerY=hasInsets?insetTop+insetH+45:bottom+75;
   const H=state.information?footerY+135:hasInsets?insetTop+insetH+30:bottom+45;
-  const parts=[`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="plot-title plot-desc"><title id="plot-title">Black-hole jets on a shared gravitational-radius scale</title><desc id="plot-desc">${escapeXML(list.map(s=>s.name).join(', '))}. ${state.projection} distances; M87 halo always projected. R_G equals GM over c squared. Colours do not compare brightness.</desc><defs><filter id="light-emission" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.58"/><feFuncG type="linear" slope="0.58"/><feFuncB type="linear" slope="0.58"/><feFuncA type="gamma" amplitude="1" exponent="0.6" offset="0"/></feComponentTransfer></filter></defs><rect width="${W}" height="${H}" fill="${p.bg}"/><g font-family="Arial,Helvetica,sans-serif">`];
+  const parts=[`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="plot-title plot-desc"><title id="plot-title">Black hole low Eddington / hard state jets across the mass scale</title><desc id="plot-desc">${escapeXML(list.map(s=>s.name).join(', '))}. Shared size scale: ${unit}. ${state.projection} distances; M87 halo always projected. R_G equals GM over c squared. Core markers are not jet sizes. Colours do not compare brightness.</desc><defs><filter id="light-emission" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.58"/><feFuncG type="linear" slope="0.58"/><feFuncB type="linear" slope="0.58"/><feFuncA type="gamma" amplitude="1" exponent="0.6" offset="0"/></feComponentTransfer></filter></defs><rect width="${W}" height="${H}" fill="${p.bg}"/><g font-family="Arial,Helvetica,sans-serif">`];
   const text=(x,y,str,size=12,color=p.muted,anchor='middle',extra='')=>parts.push(`<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="${size}" fill="${color}" ${extra}>${escapeXML(str)}</text>`);
   const image=(s,x,y,k)=>{
     const w=s.width*k,h=s.height*k;
     return `<image data-source="${s.id}" x="${x-s.core[0]*k}" y="${y-s.core[1]*k}" width="${w}" height="${h}" href="${s.image}" ${state.theme==='light'?'filter="url(#light-emission)"':''}/>`;
   };
   parts.push(`<line x1="78" x2="${W-18}" y1="${core}" y2="${core}" stroke="${p.muted}" stroke-width=".7" stroke-dasharray="2 6" opacity=".55"/>`);
-  text(42,35,'10⁹ Rɢ',13,p.ink);text(22,core-10,'CORE',8,p.muted,'start');
+  text(42,35,physical?'pc':'10⁹ Rɢ',13,p.ink);text(22,core-10,'CORE',8,p.muted,'start');
   parts.push(`<line x1="65" x2="65" y1="${top}" y2="${bottom}" stroke="${p.muted}" stroke-width="1"/>`);
   const step=tickStep(state.above+state.below);
   for(let i=Math.ceil(-state.above/step);i<=Math.floor(state.below/step);i++){
-    const val=i*step,y=core+val*scale,label=Number(val.toPrecision(5)).toLocaleString('en-US',{maximumFractionDigits:5}).replace('-','−');
+    const val=i*step,y=core+val*scale,label=formatNumber(Number(val.toPrecision(5))).replace('-','−');
     parts.push(`<line x1="60" x2="70" y1="${y}" y2="${y}" stroke="${p.muted}"/>`);text(52,y+4,label,11,p.muted,'end');
   }
   list.forEach((s,i)=>{
-    const left=95+i*col,cx=left+col/2,color=sourceColor(s),k=rgPerPixel(s,state.projection)*scale/BILLION;
+    const left=95+i*col,cx=left+col/2,color=sourceColor(s),k=unitsPerPixel(s,state.projection,state.units)*scale;
     text(cx,35,s.name,17,color);text(cx,58,s.band,10);
     if(s.id==='m87')text(cx,75,'PROJECTED HALO',8,p.muted);
     parts.push(`<defs><clipPath id="plot-${s.id}"><rect x="${left+5}" y="${top}" width="${col-10}" height="${plotH}"/></clipPath></defs>`);
     parts.push(`<g clip-path="url(#plot-${s.id})">${image(s,cx,core,k)}</g>`);
-    const e=extent(s,state.projection),clipped=e.below>state.below*1.001||e.above>state.above*1.001||s.width*k>col-10;
+    const tiny=s.height*k<1;
+    if(tiny){
+      parts.push(`<circle data-core-marker="${s.id}" cx="${cx}" cy="${core}" r="2.2" fill="${color}"><title>Core marker; jet smaller than one pixel at this scale</title></circle>`);
+      text(cx,core+22,'Jet below 1 pixel · core marker',9,color);
+    }
+    const e=extent(s,state.projection,state.units),clipped=e.below>state.below*1.001||e.above>state.above*1.001||s.width*k>col-10;
     if(clipped)text(cx,bottom+19,'Image extends beyond view',9,color);
-    if(hasInsets&&s.inset){
+    if(hasInsets&&(s.inset||(physical&&s.height*k<120))){
       // Uniform magnification only; changing range never changes the common calibration.
-      const zoom=Math.min(s.inset,Math.floor(Math.min((col-34)/(s.width*k),235/(s.height*k))*10)/10);
+      const available=Math.min((col-34)/(s.width*k),235/(s.height*k));
+      const zoom=physical?niceMagnification(available*.95):Math.min(s.inset,Math.floor(available*10)/10);
       if(zoom>1){
         const bw=Math.max(16,Math.min(s.width*k+12,col-20)),bh=Math.max(20,Math.min(s.height*k+12,plotH));
         const boxY=Math.max(top,Math.min(core-s.core[1]*k-6,bottom-bh));
         parts.push(`<rect x="${cx-bw/2}" y="${boxY}" width="${bw}" height="${bh}" fill="none" stroke="${color}" stroke-width=".8"/><path d="M${cx-bw/2},${boxY+bh} L${left+10},${insetTop} M${cx+bw/2},${boxY+bh} L${left+col-10},${insetTop}" stroke="${color}" opacity=".35" stroke-dasharray="3 4" fill="none"/><rect x="${left+10}" y="${insetTop}" width="${col-20}" height="${insetH}" rx="5" fill="${p.bg}" stroke="${p.line}"/>`);
-        text(cx,insetTop+25,`×${zoom} enlargement`,12,color);
+        text(cx,insetTop+25,(zoom>=1e4?`Enlarged ${scientific(zoom)} times`:`×${zoom} enlargement`),12,color);
         const zk=k*zoom,bodyY=insetTop+44,bodyH=235;
         const imageTop=bodyY+(bodyH-s.height*zk)/2,zy=imageTop+s.core[1]*zk;
         parts.push(image(s,cx,zy,zk));
-        const barValue=10**Math.floor(Math.log10(125/(scale*zoom/BILLION))),barW=barValue*scale*zoom/BILLION;
+        const barValue=10**Math.floor(Math.log10(125/(scale*zoom))),barW=barValue*scale*zoom;
         const bx=cx-barW/2,by=insetTop+insetH-33;
         parts.push(`<path d="M${bx},${by-4}v8 M${bx},${by}h${barW} M${bx+barW},${by-4}v8" fill="none" stroke="${color}"/>`);
-        text(cx,by+21,`${formatPower(barValue)} Rɢ`,11,color);
+        text(cx,by+21,physical?physicalBar(barValue):`${formatPower(barValue*1e9)} Rɢ`,11,color);
       }else text(cx,insetTop+45,'Resolved at the shared scale',10,p.muted);
     }
     if(state.information){
@@ -88,7 +102,11 @@ function renderFigure(){
   });
   parts.push('</g></svg>');$('figure').innerHTML=parts.join('');
 }
-function formatPower(v){const exp=Math.round(Math.log10(v));return '10'+String(exp).replace(/./g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]);}
+function formatPower(v){const exp=Math.round(Math.log10(v));return '10'+String(exp).replace(/./g,d=>d==='-'?'⁻':'⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]);}
+function formatNumber(v){return v!==0&&Math.abs(v)<.001?Number(v.toPrecision(3)).toExponential():v.toLocaleString('en-US',{maximumFractionDigits:5});}
+function scientific(v){const exp=Math.floor(Math.log10(v)),m=Number((v/10**exp).toPrecision(2));return m===1?formatPower(v):`${m} × ${formatPower(10**exp)}`;}
+function niceMagnification(v){const base=10**Math.floor(Math.log10(v));return ([5,2,1].find(n=>n*base<=v)||1)*base;}
+function physicalBar(pc){return pc>=1000?`${formatNumber(pc/1000)} kpc`:pc>=.001?`${formatNumber(pc)} pc`:`${formatNumber(Number((pc*206264.806247).toPrecision(3)))} AU`;}
 function renderDetails(){
   const list=selected();$('source-details').style.display=state.information?'':'none';
   $('source-details').innerHTML=list.map(s=>`<article class="source-detail"><h3 style="color:${sourceColor(s)}">${escapeXML(s.name)}</h3><dl><dt>Black-hole mass</dt><dd>${escapeXML(s.massLabel)}</dd><dt>Distance / scale</dt><dd>${escapeXML(s.distance)}</dd><dt>Inclination</dt><dd>${escapeXML(s.inclinationLabel)}</dd><dt>L<sub>bol</sub> / L<sub>Edd</sub></dt><dd>${escapeXML(s.eddington)}</dd></dl><p>${escapeXML(s.notes)}</p><details><summary style="font-size:10px;cursor:pointer">Image calibration</summary><p>${escapeXML(s.calibration)}</p></details><p>${s.references.map(r=>`<a class="ref" href="${escapeXML(r.url)}" target="_blank" rel="noreferrer">${escapeXML(r.label)} ↗</a>`).join('')}</p></article>`).join('');
@@ -105,11 +123,18 @@ function bind(){
   $('clear-all').onclick=()=>{state.selected=[];commit();};
   $('theme').onclick=()=>{state.theme=state.theme==='dark'?'light':'dark';commit();};
   for(const mode of ['projected','deprojected'])$(mode).onclick=()=>{state.projection=mode;commit();};
+  for(const mode of ['rg','physical'])$('units-'+mode).onclick=()=>{
+    if(state.units===mode)return;
+    state.units=mode;
+    if(mode==='physical')state.insets=false;
+    Object.assign(state,fitRange(selected().length?selected():sources,state.projection,state.units));
+    $('range-error').hidden=true;commit();
+  };
   const updateRange=()=>{
     const a=Number($('range-above').value),b=Number($('range-below').value);
-    const ok=$('range-above').value!==''&&$('range-below').value!==''&&validRange(a,b);
+    const ok=$('range-above').value!==''&&$('range-below').value!==''&&validRange(a,b,state.units);
     $('range-error').hidden=ok;
-    if(!ok){$('range-error').textContent='Use non-negative values up to 10,000, with a total range of at least 0.001.';return;}
+    if(!ok){$('range-error').textContent=state.units==='physical'?'Use non-negative distances up to 1 billion parsecs, with a positive total range.':'Use non-negative values up to 10,000, with a total range of at least 0.001.';return;}
     state.above=a;state.below=b;renderFigure();
     try{history.replaceState(null,'',stateToHash(state));}catch{}
   };
@@ -117,14 +142,14 @@ function bind(){
     $(id).addEventListener('input',updateRange);
     $(id).addEventListener('change',updateRange);
   }
-  $('fit').onclick=()=>{Object.assign(state,fitRange(selected(),state.projection));$('range-error').hidden=true;commit();};
+  $('fit').onclick=()=>{Object.assign(state,fitRange(selected(),state.projection,state.units));$('range-error').hidden=true;commit();};
   for(const [id,key] of [['insets','insets'],['information','information']])$(id).onchange=e=>{state[key]=e.target.checked;commit();};
   $('reset').onclick=()=>{state=freshState();$('range-error').hidden=true;commit();};
   $('figure-viewport').addEventListener('wheel',e=>{
     if(!state.selected.length||Math.abs(e.deltaX)>Math.abs(e.deltaY)||e.shiftKey||e.ctrlKey)return;
     e.preventDefault();const f=Math.exp(Math.max(-.35,Math.min(.35,e.deltaY*.0015)));
     const a=Number((state.above*f).toPrecision(5)),b=Number((state.below*f).toPrecision(5));
-    if(validRange(a,b)){state.above=a;state.below=b;commit();}
+    if(validRange(a,b,state.units)){state.above=a;state.below=b;commit();}
   },{passive:false});
   $('share').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);toast('Comparison link copied.');}catch{window.prompt('Copy this comparison link:',location.href);}};
   $('svg').onclick=()=>exportFigure('svg');$('png').onclick=()=>exportFigure('png');
@@ -142,7 +167,7 @@ async function exportFigure(format){
       image.setAttribute('href',imageData.get(path));
     }
     const metadata=document.createElementNS('http://www.w3.org/2000/svg','metadata');
-    metadata.textContent=JSON.stringify({title:'Jet Atlas',url:location.href,definition:'R_G = GM/c^2',settings:state,sources:selected()});clone.prepend(metadata);
+    metadata.textContent=JSON.stringify({title:document.title,url:location.href,definition:'R_G = GM/c^2; physical mode in parsecs, converted using each source mass',settings:state,sources:selected()});clone.prepend(metadata);
     const svg=new XMLSerializer().serializeToString(clone),blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});
     let download=blob;
     if(format==='png'){
@@ -151,7 +176,7 @@ async function exportFigure(format){
       canvas.width=width*2;canvas.height=height*2;const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,canvas.width,canvas.height);
       download=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('Could not render PNG')),'image/png'));
     }
-    const target=URL.createObjectURL(download),a=document.createElement('a');a.href=target;a.download=`jet-atlas-${state.projection}-${state.theme}.${format}`;a.click();setTimeout(()=>URL.revokeObjectURL(target),30000);toast(`${format.toUpperCase()} downloaded.`);
+    const target=URL.createObjectURL(download),a=document.createElement('a');a.href=target;a.download=`jet-atlas-${state.units}-${state.projection}-${state.theme}.${format}`;a.click();setTimeout(()=>URL.revokeObjectURL(target),30000);toast(`${format.toUpperCase()} downloaded.`);
   }catch(error){console.error(error);toast('Export failed. Please try again.');}
   finally{if(url)URL.revokeObjectURL(url);button.disabled=false;button.textContent=label;}
 }
@@ -160,7 +185,7 @@ async function init(){
     const response=await fetch('sources.json');if(!response.ok)throw Error('Could not load source catalogue');
     sources=(await response.json()).sources;
     document.querySelector('.edition').textContent=`01 / ${sources.length} SOURCES`;
-    document.querySelector('.lede').textContent=`Real radio images. ${sources.length} black holes. One gravitational-radius ruler.`;
+    document.querySelector('.lede').textContent=`Real radio images. ${sources.length} black holes. Compare gravitational radii or physical size.`;
     state=stateFromHash(location.hash,sources.map(s=>s.id));
     // Preload every selected image before allowing an export.
     await Promise.all(sources.map(s=>{const image=new Image();image.src=s.image;return image.decode();}));

@@ -195,7 +195,7 @@ async function exportFigure(format){
 }
 async function init(){
   try{
-    const response=await fetch('sources.json?v=6');if(!response.ok)throw Error('Could not load source catalogue');
+    const response=await fetch('sources.json?v=7');if(!response.ok)throw Error('Could not load source catalogue');
     sources=(await response.json()).sources;
     document.querySelector('.edition').textContent=`01 / ${sources.length} VIEWS`;
     const objectCount=new Set(sources.map(s=>s.objectId||s.id)).size;

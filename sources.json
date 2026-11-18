@@ -154,7 +154,7 @@
     },
     {
       "id": "ngc6251-lobes",
-      "name": "NGC (lobes)",
+      "name": "NGC 6251 (lobes)",
       "shortName": "NGC 6251 lobes",
       "kind": "Active galactic nucleus",
       "band": "LOFAR · 150 MHz · jet + lobes",

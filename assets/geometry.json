@@ -1,0 +1,57 @@
+{
+  "j1727": {
+    "image": "assets/j1727.png",
+    "width": 321,
+    "height": 1241,
+    "core": [
+      176,
+      178
+    ],
+    "rgPerPixelProjected": 3618128.7723793224,
+    "inclination": 40
+  },
+  "cygx1": {
+    "image": "assets/cygx1.png",
+    "width": 63,
+    "height": 479,
+    "core": [
+      32,
+      183
+    ],
+    "rgPerPixelProjected": 530431.3401927662,
+    "inclination": 27.5
+  },
+  "ngc6251": {
+    "image": "assets/ngc6251.png",
+    "width": 93,
+    "height": 544,
+    "core": [
+      43,
+      19
+    ],
+    "rgPerPixelProjected": 12898884.966624836,
+    "inclination": 30
+  },
+  "cena": {
+    "image": "assets/cena.png",
+    "width": 572,
+    "height": 592,
+    "core": [
+      287,
+      300
+    ],
+    "rgPerPixelProjected": 11665724.284277575,
+    "inclination": 50
+  },
+  "m87": {
+    "image": "assets/m87.png",
+    "width": 1989,
+    "height": 2128,
+    "core": [
+      861,
+      1072
+    ],
+    "rgPerPixelProjected": 153451.02732463548,
+    "inclination": null
+  }
+}

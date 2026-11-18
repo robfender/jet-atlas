@@ -1,0 +1,39 @@
+JET ATLAS - INITIAL SOURCE CALIBRATION
+Prepared 18 November 2026 from the previously vetted five-source static montage.
+All R_G values use GM/c^2. Original rasters/FITS and detailed figure-generation records remain in the parent scientific project, outside this public repository.
+
+SWIFT J1727.8-1613
+Wood et al.2024, ApJL971L9, Fig2 original VLBA8.4GHz raster; https://arxiv.org/abs/2405.12370
+Distance5.5kpc supersedes older values: Burridge et al.2025 ApJ994243.
+M10Msun, i40deg adopted. Native10mas bar154px. Deprojected5,628,809.13984 R_G/nativepx; projected3,618,128.77238 R_G/nativepx.
+Core original(233,238); original(464,1499) map cropped(14,60,439,1275), compass/frame legends removed, black areas made transparent, empty alpha trimmed. Core in delivered PNG(176,178), PNG321x1241. The faint contour/noise islands and original core/knot arrows are retained. Cyan recolouring follows the static figure; no geometric rescaling after final pixel calibration.
+Lbol/LEdd~1 refers to peak hard state; Burridge central1.4(+0.9,-0.6), not the Aug30VLBA epoch.
+
+CYGNUS X-1
+Prabu et al.2026 NatureAstronomy10,1039, DOI10.1038/s41550-026-02828-3; Miller-Jones et al.2021 DOI10.1126/science.abb3363.
+Actual BM429Stack.fits, Zenodo DOI10.5281/zenodo.18390870. Six2016VLBA8.4GHz epochs, rms~0.01mJy/beam. Native0.0500000008338mas/pixel, restoringbeam1.59084x1.07287mas. Logarithmic display5sigma0.05mJy/beam to7.924mJy/beam; black belowthreshold; no added smoothing.
+D2.22kpc,M21.2Msun,i27.5deg adopted from orbit; small jet-orbit misalignment remains possible. Native coreFITSarray(533,501), origin-lower PNG(533,522). Rotation155deg clockwise so approachdownward, then transparent trim: PNG63x479, core(32,183). Deprojected1,148,744.84728R_G/pixel; projected530,431.340193R_G/pixel.
+Radio brightness peak approximates BH location; frequency-dependent photosphere offset not corrected. Representative hardstate radiativeEddratio~1e-2; not a simultaneous flux fit of this stack. Preferred insetx5.
+
+NGC6251
+Perley,Bridle&Willis1984ApJS54,291; VLA image extracted from published multi-panel montage. https://ui.adsabs.harvard.edu/abs/1984ApJS...54..291P/abstract
+Original543x779 raster, original nucleus(50,525), axisendpoint(491,292), rotation117.849494699deg clockwise. Original middle-panel polygon clipping preserves its visible jet. AdoptM6e8Msun,i30deg. Printed100kpcbar270nativepixels gives deprojected25,797,769.93325R_G/pixel, projected12,898,884.96662R_G/pixel. Historical printed physical calibration approximate; original assumed distance not independently recovered.
+Trimmedasset93x544,core(43,19). Red recolouring inherited from static figure, no generative reconstruction. Full extracted extent available; default range crops it with a visible note.
+NuclearLbol8e42erg/s fromHo2009Table1, DOI10.1088/0004-637X/699/1/626 =>~1e-4Edd.
+
+CENTAURUS A
+Burns,Feigelson&Schreier1983ApJ273,128, Fig1upper1.407GHz original contour map. https://ui.adsabs.harvard.edu/abs/1983ApJ...273..128B/abstract
+Rendered1391x1800 original page; crop(524,244,436,435), originalcore(747,458). Printed2arcminbar72nativepixels, recalibrated atmodernD3.8Mpc =>30.70486647pc/pixel. M5.5e7Msun,i50deg adopted. Original scale/beam annotations masked in blank areas; northern lobe rotated downward, green inversion. Projected11,665,724.28428R_G/pixel. DeliveredPNG572x592,core(287,300). Inner lobes only, not giant outerlobes.
+NuclearLbol9.45e42erg/s fromBorkar2021 DOI10.1093/mnras/staa3515 =>~1e-3Edd.
+
+M87
+Owen,Eilek&Kassim2000ApJ543,611, Fig1fullVLA327MHz radio halo. DOI10.1086/317151; https://arxiv.org/abs/astro-ph/0006150
+Originalembeddedraster1569x1805; cropy169..1805; printed20kpcbar419nativepixels =>47.732696897pc/pixel. Core(740,975) estimated +/-15nativepixels, rotate31.6776747714deg clockwise to align outerhalo majoraxis vertically. Original physical-bar annotation masked in blank lowerleft area. Gold recolouring inherited fromstaticfigure. M6.5e9Msun =>153,451.0273246PROJECTEDR_G/pixel. DeliveredPNG1989x2128,core(861,1072).
+No halo deprojection. Innerjet17.2+/-3.3deg(Mertens2016,arxiv1608.05063) not a singleangle forhalo.
+NuclearLbol2.7e42erg/s Prieto2016 DOI10.1093/mnras/stw166 =>~3e-6Edd atadoptedmass. Preferred insetx10.
+
+ASSET DISPLAY AND THEMES
+Native masks/colours are deterministically rendered from source figures with isotropic pixel geometry. Original black display background is converted to alpha: V=max(R,G,B), alpha=V, RGB'=255*RGB/V; valuesV<5 transparent. This reproduces the original image on black to rounding precision and permits a light theme without opaque black rectangles. Light mode attenuates emissionRGB and boosts faint alpha for legibility. Colours and display intensity are illustrative, not flux-calibrated comparisons. Display width is isotropically scaled along with length; apparent width is not an intrinsic-width deprojection.
+
+CONTACT
+Rob.Fender@physics.ox.ac.uk, public professional contact verified at https://www.physics.ox.ac.uk/our-people/fender

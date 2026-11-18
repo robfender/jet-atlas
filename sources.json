@@ -1,0 +1,190 @@
+{
+  "definition": "R_G = GM/c²",
+  "sources": [
+    {
+      "id": "j1727",
+      "name": "Swift J1727.8−1613",
+      "shortName": "J1727",
+      "kind": "Stellar-mass black hole",
+      "band": "VLBA · 8.4 GHz",
+      "color": "#64d9ff",
+      "lightColor": "#0875a4",
+      "mass": 10,
+      "massLabel": "10 M☉ (adopted)",
+      "distance": "5.5 kpc",
+      "inclinationLabel": "40° (adopted)",
+      "eddington": "∼1 · peak hard state",
+      "notes": "Hard-state jet and detached Knot 0. The peak hard-state Eddington ratio is not specific to the radio imaging epoch. Distance follows Burridge et al. (2025).",
+      "calibration": "Original Wood et al. Fig. 2. 10 mas = 154 native pixels; 5.5 kpc. The 40° inclination and 10-solar-mass black hole are adopted.",
+      "references": [
+        {
+          "label": "Wood et al. (2024) · VLBA image",
+          "url": "https://arxiv.org/abs/2405.12370"
+        },
+        {
+          "label": "Burridge et al. (2025) · distance",
+          "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...994..243B/abstract"
+        }
+      ],
+      "image": "assets/j1727.png",
+      "width": 321,
+      "height": 1241,
+      "core": [
+        176,
+        178
+      ],
+      "rgPerPixelProjected": 3618128.7723793224,
+      "inclination": 40
+    },
+    {
+      "id": "cygx1",
+      "name": "Cygnus X-1",
+      "shortName": "Cyg X-1",
+      "kind": "Stellar-mass black hole",
+      "band": "VLBA · 8.4 GHz",
+      "color": "#d68bff",
+      "lightColor": "#8543b3",
+      "mass": 21.2,
+      "massLabel": "21.2 M☉",
+      "distance": "2.22 kpc",
+      "inclinationLabel": "27.5° (adopted)",
+      "eddington": "∼10⁻² · hard state",
+      "inset": 5,
+      "notes": "Six-epoch 2016 VLBA stack showing both jet and counterjet. The inclination is adopted from the binary orbit; Prabu et al. constrain a small jet–orbit misalignment.",
+      "calibration": "Released BM429Stack.fits; 0.0500000008 mas per native pixel, no added smoothing. Logarithmic display above 5σ (~0.05 mJy/beam). Radio brightness peak is the approximate origin.",
+      "references": [
+        {
+          "label": "Prabu et al. (2026) · jet imaging",
+          "url": "https://doi.org/10.1038/s41550-026-02828-3"
+        },
+        {
+          "label": "Miller-Jones et al. (2021) · system parameters",
+          "url": "https://doi.org/10.1126/science.abb3363"
+        },
+        {
+          "label": "Original VLBI image data · Zenodo",
+          "url": "https://doi.org/10.5281/zenodo.18390870"
+        }
+      ],
+      "image": "assets/cygx1.png",
+      "width": 63,
+      "height": 479,
+      "core": [
+        32,
+        183
+      ],
+      "rgPerPixelProjected": 530431.3401927662,
+      "inclination": 27.5
+    },
+    {
+      "id": "ngc6251",
+      "name": "NGC 6251",
+      "shortName": "NGC 6251",
+      "kind": "Active galactic nucleus",
+      "band": "VLA · radio",
+      "color": "#ff6666",
+      "lightColor": "#b63437",
+      "mass": 600000000.0,
+      "massLabel": "6 × 10⁸ M☉",
+      "distance": "Historical image calibration",
+      "inclinationLabel": "30° (adopted)",
+      "eddington": "∼10⁻⁴",
+      "notes": "Extended radio jet extracted from the published montage. Its printed 100-kpc bar sets an approximate historical length calibration; the original distance convention has not been independently recovered.",
+      "calibration": "Printed 100 kpc = 270 native pixels. Adopted M = 6 × 10⁸ M☉ and i = 30°. Approximate scale inherited from the vetted montage.",
+      "references": [
+        {
+          "label": "Perley, Bridle & Willis (1984) · radio image",
+          "url": "https://ui.adsabs.harvard.edu/abs/1984ApJS...54..291P/abstract"
+        },
+        {
+          "label": "Ho (2009) · nuclear luminosity",
+          "url": "https://doi.org/10.1088/0004-637X/699/1/626"
+        }
+      ],
+      "image": "assets/ngc6251.png",
+      "width": 93,
+      "height": 544,
+      "core": [
+        43,
+        19
+      ],
+      "rgPerPixelProjected": 12898884.966624836,
+      "inclination": 30
+    },
+    {
+      "id": "cena",
+      "name": "Centaurus A",
+      "shortName": "Cen A",
+      "kind": "Active galactic nucleus",
+      "band": "VLA · 1.4 GHz · contours",
+      "color": "#5dedad",
+      "lightColor": "#168359",
+      "mass": 55000000.0,
+      "massLabel": "5.5 × 10⁷ M☉",
+      "distance": "3.8 Mpc",
+      "inclinationLabel": "50° (adopted)",
+      "eddington": "∼10⁻³",
+      "notes": "Both inner radio lobes are shown. The northern inner lobe is oriented downward for comparison. This is not the much larger outer-lobe system.",
+      "calibration": "Burns et al. Fig. 1 upper map; 2-arcmin bar = 72 native pixels. Recalibrated to 3.8 Mpc. Adopted i = 50°.",
+      "references": [
+        {
+          "label": "Burns, Feigelson & Schreier (1983) · radio map",
+          "url": "https://ui.adsabs.harvard.edu/abs/1983ApJ...273..128B/abstract"
+        },
+        {
+          "label": "Borkar et al. (2021) · nuclear luminosity",
+          "url": "https://doi.org/10.1093/mnras/staa3515"
+        }
+      ],
+      "image": "assets/cena.png",
+      "width": 572,
+      "height": 592,
+      "core": [
+        287,
+        300
+      ],
+      "rgPerPixelProjected": 11665724.284277575,
+      "inclination": 50
+    },
+    {
+      "id": "m87",
+      "name": "M87",
+      "shortName": "M87",
+      "kind": "Active galactic nucleus",
+      "band": "VLA · 327 MHz · full halo",
+      "color": "#ffcf6a",
+      "lightColor": "#9c6b16",
+      "mass": 6500000000.0,
+      "massLabel": "6.5 × 10⁹ M☉",
+      "distance": "Printed 20-kpc scale",
+      "inclinationLabel": "Halo unknown; inner jet 17.2° ± 3.3°",
+      "eddington": "∼3 × 10⁻⁶",
+      "inset": 10,
+      "notes": "Full outer radio halo, retained in projection. The inner jet inclination does not establish a single viewing angle for the outer lobes. The radio nucleus is located approximately (±15 native pixels).",
+      "calibration": "Owen et al. Fig. 1 original embedded raster: 20 projected kpc = 419 native pixels. Outer-halo morphology is rotated vertically; no inclination correction.",
+      "references": [
+        {
+          "label": "Owen, Eilek & Kassim (2000) · full radio halo",
+          "url": "https://doi.org/10.1086/317151"
+        },
+        {
+          "label": "Mertens et al. (2016) · inner jet angle",
+          "url": "https://arxiv.org/abs/1608.05063"
+        },
+        {
+          "label": "Prieto et al. (2016) · nuclear luminosity",
+          "url": "https://doi.org/10.1093/mnras/stw166"
+        }
+      ],
+      "image": "assets/m87.png",
+      "width": 1989,
+      "height": 2128,
+      "core": [
+        861,
+        1072
+      ],
+      "rgPerPixelProjected": 153451.02732463548,
+      "inclination": null
+    }
+  ]
+}

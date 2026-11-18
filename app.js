@@ -1,4 +1,4 @@
-import {freshState,unitsPerPixel,extent,fitRange,validRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=4';
+import {freshState,unitsPerPixel,extent,fitRange,validRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=5';
 
 const $=id=>document.getElementById(id);
 const escapeXML=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -89,7 +89,8 @@ function renderFigure(){
         text(cx,insetTop+25,(zoom>=1e4?`Enlarged ${scientific(zoom)} times`:`×${zoom} enlargement`),12,color);
         const zk=k*zoom,bodyY=insetTop+44;
         const imageTop=bodyY+(bodyH-s.height*zk)/2,zy=imageTop+s.core[1]*zk;
-        parts.push(image(s,cx,zy,zk));
+        const insetCoreX=cx+(s.core[0]-s.width/2)*zk;
+        parts.push(image(s,insetCoreX,zy,zk));
         const barValue=10**Math.floor(Math.log10(125/(scale*zoom))),barW=barValue*scale*zoom;
         const bx=cx-barW/2,by=insetTop+insetH-33;
         parts.push(`<path d="M${bx},${by-4}v8 M${bx},${by}h${barW} M${bx+barW},${by-4}v8" fill="none" stroke="${color}"/>`);
@@ -186,7 +187,7 @@ async function exportFigure(format){
 }
 async function init(){
   try{
-    const response=await fetch('sources.json?v=4');if(!response.ok)throw Error('Could not load source catalogue');
+    const response=await fetch('sources.json?v=5');if(!response.ok)throw Error('Could not load source catalogue');
     sources=(await response.json()).sources;
     document.querySelector('.edition').textContent=`01 / ${sources.length} VIEWS`;
     const objectCount=new Set(sources.map(s=>s.objectId||s.id)).size;

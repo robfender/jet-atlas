@@ -76,3 +76,10 @@ test('new extended sources recover their documented physical calibrations',()=>{
   assert.ok(ann.height*unitsPerPixel(ann,'projected','physical')>2.5);
   assert.ok(lobes.height*unitsPerPixel(lobes,'projected','physical')>1.7e6);
 });
+
+test('fit includes both transverse sides of asymmetric source images',()=>{
+  for(const s of sources)for(const units of ['rg','physical']){
+    const fit=fitRange([s],'deprojected',units),k=unitsPerPixel(s,'deprojected',units)*620/(fit.above+fit.below);
+    assert.ok(Math.max(s.core[0],s.width-s.core[0])*k<=125,s.id);
+  }
+});

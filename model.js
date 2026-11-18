@@ -19,7 +19,7 @@ export function fitRange(sources,projection,units='rg'){
   const a=Math.max(minimum,Math.max(...ext.map(e=>e.above))),b=Math.max(minimum,Math.max(...ext.map(e=>e.below)));
   // The plot is 620 units high with 250 usable units in each source column.
   // Widen the vertical range if necessary to retain the full image width too.
-  const widthSpan=Math.max(...sources.map(s=>s.width*unitsPerPixel(s,projection,units)))*620/250;
+  const widthSpan=Math.max(...sources.map(s=>2*Math.max(s.core[0],s.width-s.core[0])*unitsPerPixel(s,projection,units)))*620/250;
   const factor=Math.max(1,widthSpan/(a+b))*1.08;
   const step=units==='physical'?10**(Math.floor(Math.log10(Math.max(a,b)*factor))-2):.01;
   return {above:Math.ceil(a*factor/step)*step,below:Math.ceil(b*factor/step)*step};

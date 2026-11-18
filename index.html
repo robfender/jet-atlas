@@ -7,17 +7,17 @@
   <meta name="description" content="Compare black hole low Eddington / hard state jets across the mass scale, in gravitational radii or physical distance.">
   <title>Black hole low Eddington / hard state jets across the mass scale</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=2">
-  <script type="module" src="app.js?v=5"></script>
+  <link rel="stylesheet" href="styles.css?v=6">
+  <script type="module" src="app.js?v=6"></script>
 </head>
 <body>
   <header class="masthead">
-    <a class="brand" href="./"><svg width="25" height="32" viewBox="0 0 25 32" aria-hidden="true"><path d="M12.5 0v12M12.5 20v12" stroke="currentColor" stroke-width="2"/><ellipse cx="12.5" cy="16" rx="11" ry="4" fill="none" stroke="currentColor"/><circle cx="12.5" cy="16" r="3" fill="currentColor"/></svg><span>JET ATLAS</span><span class="edition">01 / SEVEN VIEWS</span></a>
+    <a class="brand" href="./"><svg width="25" height="32" viewBox="0 0 25 32" aria-hidden="true"><path d="M12.5 0v12M12.5 20v12" stroke="currentColor" stroke-width="2"/><ellipse cx="12.5" cy="16" rx="11" ry="4" fill="none" stroke="currentColor"/><circle cx="12.5" cy="16" r="3" fill="currentColor"/></svg><span>JET ATLAS</span><span class="edition">01 / EIGHT VIEWS</span></a>
     <nav aria-label="Site"><a href="https://github.com/robfender/jet-atlas" target="_blank" rel="noreferrer">GitHub ↗</a><button id="theme" class="quiet" type="button">Light theme ◐</button></nav>
   </header>
   <main>
     <section class="intro">
-      <div><p class="eyebrow">A common measure, across black-hole masses</p><h1>Black hole low Eddington / hard state jets across the mass scale</h1><p class="lede">Real radio images. Seven views of six black holes. Compare gravitational radii or physical size.</p></div>
+      <div><p class="eyebrow">A common measure, across black-hole masses</p><h1>Black hole low Eddington / hard state jets across the mass scale</h1><p class="lede">Real radio images. Eight views of seven black holes. Compare gravitational radii or physical size.</p></div>
       <div class="definition"><span>THE UNIT</span><strong>R<sub>G</sub> = GM / c²</strong><p>Distance measured in the natural length scale of each black hole.</p></div>
     </section>
     <div class="workspace">
@@ -44,19 +44,20 @@
           <h2>03 <span>Display</span></h2>
           <label class="toggle"><span>Enlarged insets</span><input id="insets" type="checkbox" checked></label>
           <label class="toggle"><span>Source information</span><input id="information" type="checkbox" checked></label>
-          <p class="hint">Insets have their own labelled scales. Scroll over the figure to zoom.</p>
+          <label class="toggle"><span>Scroll to zoom</span><input id="scroll-zoom" type="checkbox"></label>
+          <p class="hint">Use the − / + buttons above the figure to zoom. Insets have their own labelled scales.</p>
         </section>
         <button type="button" id="reset" class="reset">↺ Reset comparison</button>
       </aside>
       <section class="comparison" aria-label="Jet comparison">
-        <div class="figure-toolbar"><div><span class="live-dot"></span><span id="view-label">Shared R<sub>G</sub> scale</span></div><div class="export-actions"><button id="share" type="button">Copy link</button><button id="svg" type="button">SVG ↓</button><button id="png" type="button" class="accent">PNG ↓</button></div></div>
-        <div id="figure-viewport" class="figure-viewport" tabindex="0" aria-label="Comparison figure. Scroll horizontally on a small screen; scroll vertically over the figure to zoom."><div id="figure"></div></div>
+        <div class="figure-toolbar"><div><span class="live-dot"></span><span id="view-label">Shared R<sub>G</sub> scale</span></div><div class="export-actions"><button id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button><button id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in">+</button><button id="share" type="button">Copy link</button><button id="svg" type="button">SVG ↓</button><button id="png" type="button" class="accent">PNG ↓</button></div></div>
+        <div id="figure-viewport" class="figure-viewport" tabindex="0" aria-label="Comparison figure. Use the minus and plus buttons to zoom; scroll horizontally to see more sources."><div id="figure"></div></div>
         <div class="figure-caption"><span id="figure-summary"></span><span>ROB FENDER · JET ATLAS</span></div>
         <div class="method-note"><span class="note-icon">i</span><p id="method-note">Images share a physical scale, not a brightness scale. Colours are illustrative; different observations have different resolutions and sensitivities.</p></div>
         <section id="source-details" aria-label="Source details"></section>
       </section>
     </div>
-    <details class="methods"><summary>How to read this comparison <span>+</span></summary><div><p>Each radio nucleus is placed on the dotted core line. The images are rotated so their principal outflow axes run vertically; north is not necessarily upward. In the deprojected view, distances use the adopted inclination for each source. M87’s halo, NGC 6251’s outer lobes and 1E 1740.7−2942 stay projected because their viewing angles are not securely established. The inner-jet angle does not fix the geometry of outer lobes.</p><p>The size switch changes the calibration of each image using its own black-hole mass: physical length = (length in R<sub>G</sub>) × GM/c². Physical distances use parsecs (1 pc ≈ 206,265 AU). Switching units fits the selected sources and starts with enlarged insets off in the physical view. Sources smaller than a pixel are indicated by labelled core markers, not artificially enlarged emission. Optional insets carry their own magnification and scale.</p><p>The ruler uses R<sub>G</sub> = GM/c², not the Schwarzschild radius 2R<sub>G</sub>. Masses, distances and inclinations are fixed to the documented values below. Displayed widths use the same image magnification as lengths; this is an illustrative image comparison, not a reconstruction of intrinsic transverse jet widths.</p><p>These observations trace different components: compact jets, knots, inner lobes and a radio halo. Their detected endpoints depend on sensitivity. The Eddington ratios are approximate radiative L<sub>bol</sub>/L<sub>Edd</sub>, not jet efficiencies; J1727’s value refers to the peak hard state, not its imaging epoch.</p></div></details>
+    <details class="methods"><summary>How to read this comparison <span>+</span></summary><div><p>Each radio nucleus is placed on the dotted core line. The images are rotated so their principal outflow axes run vertically; north is not necessarily upward. In the deprojected view, distances use the adopted inclination for each source. M87’s halo, NGC 6251’s outer lobes, 1E 1740.7−2942 and Alcyoneus stay projected because their viewing angles are not securely established. The inner-jet angle does not fix the geometry of outer lobes.</p><p>The size switch changes the calibration of each image using its own black-hole mass: physical length = (length in R<sub>G</sub>) × GM/c². Physical distances use parsecs (1 pc ≈ 206,265 AU). Switching units fits the selected sources and starts with enlarged insets off in the physical view. Sources smaller than a pixel are indicated by labelled core markers, not artificially enlarged emission. Optional insets carry their own magnification and scale.</p><p>The ruler uses R<sub>G</sub> = GM/c², not the Schwarzschild radius 2R<sub>G</sub>. Masses, distances and inclinations are fixed to the documented values below. Displayed widths use the same image magnification as lengths; this is an illustrative image comparison, not a reconstruction of intrinsic transverse jet widths.</p><p>These observations trace different components: compact jets, knots, inner lobes and a radio halo. Their detected endpoints depend on sensitivity. The Eddington ratios are approximate radiative L<sub>bol</sub>/L<sub>Edd</sub>, not jet efficiencies; J1727’s value refers to the peak hard state, not its imaging epoch.</p></div></details>
   </main>
   <footer class="site-footer"><span>A growing collection, curated by Rob Fender.</span><span>Have a source in mind? <a href="mailto:Rob.Fender@physics.ox.ac.uk?subject=Jet%20Atlas%20source%20suggestion">Email Rob</a> with the image and reference.</span><a href="https://github.com/robfender/jet-atlas" target="_blank" rel="noreferrer">Data &amp; references ↗</a></footer>
   <div id="toast" role="status" aria-live="polite"></div>

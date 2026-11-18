@@ -263,6 +263,38 @@
       ],
       "rgPerPixelProjected": 153451.02732463548,
       "inclination": null
+    },
+    {
+      "id": "alcyoneus",
+      "name": "Alcyoneus",
+      "shortName": "Alcyoneus",
+      "kind": "Active galactic nucleus",
+      "band": "LOFAR · 144 MHz · full source",
+      "color": "#e2e8f8",
+      "lightColor": "#505e79",
+      "mass": 390000000.0,
+      "massLabel": "(3.9 ± 1.7) × 10⁸ M☉",
+      "distance": "z = 0.24674; 4.0 kpc/arcsec",
+      "inclinationLabel": "Lobes differ · projected",
+      "eddington": "≲10⁻² · jet-mode inference",
+      "inset": 5,
+      "notes": "Low-excitation, radiatively inefficient radio galaxy with a published projected extent of 4.99 ± 0.04 Mpc. The mass is inferred from the stellar velocity dispersion, not directly measured dynamically. The full jet and lobe image is retained projected: the two lobes have different modelled orientations. The Eddington ratio is a qualitative jet-mode inference, not a measured nuclear bolometric luminosity.",
+      "calibration": "Oei et al. (2022), Fig. 1 original embedded 2048 × 2048 image. Its caption specifies a 2048-arcsec square field centred on the host, giving 1 arcsec per native pixel. At the paper’s 4.0 kpc/arcsec this is 4000 projected pc/pixel. Orange LOFAR emission is isolated from the blue WISE background, with the two lobes and central jets retained and recoloured silver. Native core (1023.5, 1023.5), approximate to 3 pixels; rotate 127° clockwise. Lobes have 60-arcsec resolution and jets 6-arcsec resolution. The quoted 4.99-Mpc measurement comes from the paper’s separate compact-source-subtracted 90-arcsec image; the colour-image envelope is not forced to that exact length.",
+      "references": [
+        {
+          "label": "Oei et al. (2022) · discovery, image and parameters",
+          "url": "https://doi.org/10.1051/0004-6361/202142778"
+        }
+      ],
+      "image": "assets/alcyoneus.png",
+      "width": 558,
+      "height": 1300,
+      "core": [
+        328,
+        537
+      ],
+      "rgPerPixelProjected": 214319934.83007422,
+      "inclination": null
     }
   ]
 }

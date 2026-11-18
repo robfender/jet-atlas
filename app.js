@@ -1,4 +1,4 @@
-import {freshState,unitsPerPixel,extent,fitRange,validRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=5';
+import {freshState,unitsPerPixel,extent,fitRange,validRange,zoomRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=6';
 
 const $=id=>document.getElementById(id);
 const escapeXML=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -8,6 +8,10 @@ const imageData=new Map();
 function toast(message){$('toast').textContent=message;$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),3500);}
 function selected(){return state.order.filter(id=>state.selected.includes(id)).map(id=>sources.find(s=>s.id===id)).filter(Boolean);}
 function sourceColor(source){return state.theme==='dark'?source.color:source.lightColor;}
+function updateZoomButtons(){
+  $('zoom-in').disabled=!state.selected.length||!zoomRange(state.above,state.below,.8,state.units);
+  $('zoom-out').disabled=!state.selected.length||!zoomRange(state.above,state.below,1.25,state.units);
+}
 function commit(){
   const viewport=$('figure-viewport'),scroll=viewport.scrollLeft;
   document.documentElement.dataset.theme=state.theme;
@@ -24,6 +28,8 @@ function commit(){
   $('projected').setAttribute('aria-pressed',String(state.projection==='projected'));
   $('projection-note').textContent=state.projection==='deprojected'?'Adopted inclinations; unknown angles stay projected.':'All distances projected onto the plane of the sky.';
   $('insets').checked=state.insets;$('information').checked=state.information;
+  $('scroll-zoom').checked=state.scrollZoom;
+  updateZoomButtons();
   $('selected-count').textContent=`${state.selected.length} / ${sources.length}`;
   $('fit').disabled=!state.selected.length;
   for(const id of ['svg','png','share'])$(id).disabled=!state.selected.length;
@@ -48,7 +54,7 @@ function renderFigure(){
   const hasInsets=state.insets;
   const footerY=bottom+75;
   const H=state.information?footerY+135:bottom+45;
-  const parts=[`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="plot-title plot-desc"><title id="plot-title">Black hole low Eddington / hard state jets across the mass scale</title><desc id="plot-desc">${escapeXML(list.map(s=>s.name).join(', '))}. Shared size scale: ${unit}. ${state.projection} distances; M87 halo, NGC 6251 lobes and 1E 1740 stay projected. R_G equals GM over c squared. Core markers are not jet sizes. Colours do not compare brightness.</desc><defs><filter id="light-emission" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.58"/><feFuncG type="linear" slope="0.58"/><feFuncB type="linear" slope="0.58"/><feFuncA type="gamma" amplitude="1" exponent="0.6" offset="0"/></feComponentTransfer></filter></defs><rect width="${W}" height="${H}" fill="${p.bg}"/><g font-family="Arial,Helvetica,sans-serif">`];
+  const parts=[`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="plot-title plot-desc"><title id="plot-title">Black hole low Eddington / hard state jets across the mass scale</title><desc id="plot-desc">${escapeXML(list.map(s=>s.name).join(', '))}. Shared size scale: ${unit}. ${state.projection} distances; Views with unknown inclinations remain projected. R_G equals GM over c squared. Core markers are not jet sizes. Colours do not compare brightness.</desc><defs><filter id="light-emission" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.58"/><feFuncG type="linear" slope="0.58"/><feFuncB type="linear" slope="0.58"/><feFuncA type="gamma" amplitude="1" exponent="0.6" offset="0"/></feComponentTransfer></filter></defs><rect width="${W}" height="${H}" fill="${p.bg}"/><g font-family="Arial,Helvetica,sans-serif">`];
   const text=(x,y,str,size=12,color=p.muted,anchor='middle',extra='')=>parts.push(`<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="${size}" fill="${color}" ${extra}>${escapeXML(str)}</text>`);
   const image=(s,x,y,k)=>{
     const w=s.width*k,h=s.height*k;
@@ -140,7 +146,7 @@ function bind(){
     const ok=$('range-above').value!==''&&$('range-below').value!==''&&validRange(a,b,state.units);
     $('range-error').hidden=ok;
     if(!ok){$('range-error').textContent=state.units==='physical'?'Use non-negative distances up to 1 billion parsecs, with a positive total range.':'Use non-negative values up to 10,000, with a total range of at least 0.001.';return;}
-    state.above=a;state.below=b;renderFigure();
+    state.above=a;state.below=b;renderFigure();updateZoomButtons();
     try{history.replaceState(null,'',stateToHash(state));}catch{}
   };
   for(const id of ['range-above','range-below']){
@@ -148,13 +154,15 @@ function bind(){
     $(id).addEventListener('change',updateRange);
   }
   $('fit').onclick=()=>{Object.assign(state,fitRange(selected(),state.projection,state.units));$('range-error').hidden=true;commit();};
-  for(const [id,key] of [['insets','insets'],['information','information']])$(id).onchange=e=>{state[key]=e.target.checked;commit();};
+  for(const [id,key] of [['insets','insets'],['information','information'],['scroll-zoom','scrollZoom']])$(id).onchange=e=>{state[key]=e.target.checked;commit();};
+  const applyZoom=factor=>{const next=zoomRange(state.above,state.below,factor,state.units);if(next){Object.assign(state,next);$('range-error').hidden=true;commit();}};
+  $('zoom-in').onclick=()=>applyZoom(.8);
+  $('zoom-out').onclick=()=>applyZoom(1.25);
   $('reset').onclick=()=>{state=freshState();$('range-error').hidden=true;commit();};
   $('figure-viewport').addEventListener('wheel',e=>{
-    if(!state.selected.length||Math.abs(e.deltaX)>Math.abs(e.deltaY)||e.shiftKey||e.ctrlKey)return;
+    if(!state.scrollZoom||!state.selected.length||Math.abs(e.deltaX)>Math.abs(e.deltaY)||e.shiftKey||e.ctrlKey)return;
     e.preventDefault();const f=Math.exp(Math.max(-.35,Math.min(.35,e.deltaY*.0015)));
-    const a=Number((state.above*f).toPrecision(5)),b=Number((state.below*f).toPrecision(5));
-    if(validRange(a,b,state.units)){state.above=a;state.below=b;commit();}
+    applyZoom(f);
   },{passive:false});
   $('share').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);toast('Comparison link copied.');}catch{window.prompt('Copy this comparison link:',location.href);}};
   $('svg').onclick=()=>exportFigure('svg');$('png').onclick=()=>exportFigure('png');
@@ -187,7 +195,7 @@ async function exportFigure(format){
 }
 async function init(){
   try{
-    const response=await fetch('sources.json?v=5');if(!response.ok)throw Error('Could not load source catalogue');
+    const response=await fetch('sources.json?v=6');if(!response.ok)throw Error('Could not load source catalogue');
     sources=(await response.json()).sources;
     document.querySelector('.edition').textContent=`01 / ${sources.length} VIEWS`;
     const objectCount=new Set(sources.map(s=>s.objectId||s.id)).size;

@@ -1,6 +1,6 @@
 export const BILLION = 1e9;
 export const RG_PC_PER_SOLAR_MASS = 4.785560552051379e-14;
-export const DEFAULTS = Object.freeze({selected:['j1727','cygx1','ngc6251','cena','m87'],order:['j1727','cygx1','1e1740','ngc6251','ngc6251-lobes','cena','m87'],above:3,below:6.2,units:'rg',projection:'deprojected',theme:'dark',insets:true,information:true});
+export const DEFAULTS = Object.freeze({selected:['j1727','cygx1','ngc6251','cena','m87'],order:['j1727','cygx1','1e1740','ngc6251','ngc6251-lobes','cena','m87','alcyoneus'],above:3,below:6.2,units:'rg',projection:'deprojected',theme:'dark',insets:true,information:true,scrollZoom:false});
 export function freshState(){return structuredClone(DEFAULTS);}
 export function rgPerPixel(source,projection){
   return source.rgPerPixelProjected / (projection==='deprojected' && source.inclination!==null ? Math.sin(source.inclination*Math.PI/180) : 1);
@@ -25,6 +25,11 @@ export function fitRange(sources,projection,units='rg'){
   return {above:Math.ceil(a*factor/step)*step,below:Math.ceil(b*factor/step)*step};
 }
 export function validRange(above,below,units='rg'){const max=units==='physical'?1e9:10000,min=units==='physical'?1e-12:.001;return Number.isFinite(above)&&Number.isFinite(below)&&above>=0&&below>=0&&above+below>=min&&above<=max&&below<=max;}
+export function zoomRange(above,below,factor,units='rg'){
+  if(!Number.isFinite(factor)||factor<=0)return null;
+  const a=Number((above*factor).toPrecision(10)),b=Number((below*factor).toPrecision(10));
+  return validRange(a,b,units)?{above:a,below:b}:null;
+}
 export function tickStep(span){const rough=span/9;const base=10**Math.floor(Math.log10(rough));return [1,2,2.5,5,10].find(n=>n*base>=rough)*base;}
 export function insetPlacement(imageTop,imageBottom,core,plotTop=92,plotBottom=712){
   // Keep insets inside the plot, on whichever side leaves more clear space.
@@ -37,7 +42,7 @@ export function insetPlacement(imageTop,imageBottom,core,plotTop=92,plotBottom=7
   return {side,height,top:side==='below'?belowTop:aboveBottom-height};
 }
 export function stateToHash(state){
-  const p=new URLSearchParams({sources:state.order.filter(id=>state.selected.includes(id)).join(','),order:state.order.join(','),above:String(state.above),below:String(state.below),units:state.units,view:state.projection,theme:state.theme,insets:state.insets?'1':'0',info:state.information?'1':'0'});
+  const p=new URLSearchParams({sources:state.order.filter(id=>state.selected.includes(id)).join(','),order:state.order.join(','),above:String(state.above),below:String(state.below),units:state.units,view:state.projection,theme:state.theme,insets:state.insets?'1':'0',info:state.information?'1':'0',scroll:state.scrollZoom?'1':'0'});
   return '#'+p.toString();
 }
 export function stateFromHash(hash,ids){
@@ -52,5 +57,6 @@ export function stateFromHash(hash,ids){
   if(['dark','light'].includes(p.get('theme')))s.theme=p.get('theme');
   if(p.has('insets'))s.insets=p.get('insets')!=='0';
   if(p.has('info'))s.information=p.get('info')!=='0';
+  if(p.has('scroll'))s.scrollZoom=p.get('scroll')==='1';
   return s;
 }

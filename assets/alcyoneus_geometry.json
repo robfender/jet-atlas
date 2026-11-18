@@ -1,0 +1,41 @@
+{
+  "image": "assets/alcyoneus.png",
+  "width": 558,
+  "height": 1300,
+  "core": [
+    328,
+    537
+  ],
+  "rgPerPixelProjected": 214319934.83007422,
+  "inclination": null,
+  "preparation": {
+    "source": "Oei2022Fig1 original embedded2048x2048 multi-resolution radio/infrared image",
+    "sky_field_arcsec": 2048,
+    "arcsec_per_native_pixel": 1,
+    "pc_per_native_pixel": 4000,
+    "core_native_pixel": [
+      1023.5,
+      1023.5
+    ],
+    "core_uncertainty_native_pixels": 3,
+    "rotation_clockwise_deg": 127.0,
+    "display": "Orange radio component isolated from blue WISE field: R-B>20,R>50, two largest connected warm components plus central jet aperture; enclosed white radio peaks retained; tinted silver with brightness0.2R+0.8G to retain orange-to-yellow structure. No added image smoothing.",
+    "mask_components": [
+      46,
+      19
+    ],
+    "mask_component_pixel_counts": [
+      77630,
+      114661
+    ],
+    "central_aperture": [
+      1024,
+      1024,
+      140,
+      125
+    ],
+    "original_reference": "Oei et al.2022A&A660A2 DOI10.1051/0004-6361/202142778",
+    "mass_Msun": 390000000.0,
+    "projection": "projected only; two lobes have different inferred3Dorientations"
+  }
+}

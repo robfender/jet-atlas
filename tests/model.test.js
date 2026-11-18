@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
-import {DEFAULTS,freshState,rgPerPixel,unitsPerPixel,extent,fitRange,validRange,insetPlacement,stateFromHash,stateToHash} from '../model.js';
+import {DEFAULTS,freshState,rgPerPixel,unitsPerPixel,extent,fitRange,validRange,zoomRange,insetPlacement,stateFromHash,stateToHash} from '../model.js';
 const sources=JSON.parse(readFileSync(new URL('../sources.json',import.meta.url))).sources;
 test('physical image scales reproduce the vetted montage',()=>{
   const expected={j1727:5628809.139839726,cygx1:1148744.8472807263,ngc6251:25797769.933249675,cena:15228391.238,m87:153451.02732463548};
@@ -82,4 +82,28 @@ test('fit includes both transverse sides of asymmetric source images',()=>{
     const fit=fitRange([s],'deprojected',units),k=unitsPerPixel(s,'deprojected',units)*620/(fit.above+fit.below);
     assert.ok(Math.max(s.core[0],s.width-s.core[0])*k<=125,s.id);
   }
+});
+
+test('Alcyoneus uses the original angular field and remains projected',()=>{
+  const a=sources.find(s=>s.id==='alcyoneus');
+  assert.ok(Math.abs(unitsPerPixel(a,'projected','physical')-4000)<1e-8);
+  assert.equal(rgPerPixel(a,'deprojected'),rgPerPixel(a,'projected'));
+  assert.ok(Math.abs(4.99e6/(a.mass*4.785560552051379e-14)/2.6736e11-1)<1e-4);
+});
+test('button zoom narrows and widens the range around the same core fraction',()=>{
+  for(const units of ['rg','physical']){
+    const initial={above:3,below:6.2},inside=zoomRange(3,6.2,.8,units);
+    assert.ok(inside.above<3&&inside.below<6.2);
+    assert.ok(Math.abs(inside.above/(inside.above+inside.below)-3/9.2)<1e-12);
+    assert.deepEqual(zoomRange(inside.above,inside.below,1.25,units),initial);
+  }
+  assert.equal(zoomRange(10000,10000,1.25),null);
+  assert.equal(zoomRange(3,6.2,0),null);
+});
+test('scroll zoom is off by default and is preserved in share links',()=>{
+  const ids=sources.map(s=>s.id);
+  assert.equal(freshState().scrollZoom,false);
+  assert.equal(stateFromHash('#above=3&below=6.2',ids).scrollZoom,false);
+  const state={...freshState(),scrollZoom:true};
+  assert.deepEqual(stateFromHash(stateToHash(state),ids),state);
 });

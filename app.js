@@ -1,4 +1,4 @@
-import {freshState,unitsPerPixel,extent,fitRange,validRange,tickStep,stateToHash,stateFromHash} from './model.js?v=2';
+import {freshState,unitsPerPixel,extent,fitRange,validRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=3';
 
 const $=id=>document.getElementById(id);
 const escapeXML=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -45,9 +45,9 @@ function renderFigure(){
   if(!list.length){$('figure').innerHTML='<div class="empty"><strong>A universe of scales.</strong><p>Select a source to start comparing.</p></div>';return;}
   const col=270,W=95+list.length*col,top=92,plotH=620,bottom=top+plotH;
   const scale=plotH/(state.above+state.below),core=top+state.above*scale;
-  const hasInsets=state.insets&&(physical||list.some(s=>s.inset)),insetTop=bottom+55,insetH=330;
-  const footerY=hasInsets?insetTop+insetH+45:bottom+75;
-  const H=state.information?footerY+135:hasInsets?insetTop+insetH+30:bottom+45;
+  const hasInsets=state.insets&&(physical||list.some(s=>s.inset));
+  const footerY=bottom+75;
+  const H=state.information?footerY+135:bottom+45;
   const parts=[`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="plot-title plot-desc"><title id="plot-title">Black hole low Eddington / hard state jets across the mass scale</title><desc id="plot-desc">${escapeXML(list.map(s=>s.name).join(', '))}. Shared size scale: ${unit}. ${state.projection} distances; M87 halo always projected. R_G equals GM over c squared. Core markers are not jet sizes. Colours do not compare brightness.</desc><defs><filter id="light-emission" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.58"/><feFuncG type="linear" slope="0.58"/><feFuncB type="linear" slope="0.58"/><feFuncA type="gamma" amplitude="1" exponent="0.6" offset="0"/></feComponentTransfer></filter></defs><rect width="${W}" height="${H}" fill="${p.bg}"/><g font-family="Arial,Helvetica,sans-serif">`];
   const text=(x,y,str,size=12,color=p.muted,anchor='middle',extra='')=>parts.push(`<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="${size}" fill="${color}" ${extra}>${escapeXML(str)}</text>`);
   const image=(s,x,y,k)=>{
@@ -75,23 +75,26 @@ function renderFigure(){
     }
     const e=extent(s,state.projection,state.units),clipped=e.below>state.below*1.001||e.above>state.above*1.001||s.width*k>col-10;
     if(clipped)text(cx,bottom+19,'Image extends beyond view',9,color);
-    if(hasInsets&&(s.inset||(physical&&s.height*k<120))){
+    const placement=insetPlacement(core-s.core[1]*k,core+(s.height-s.core[1])*k,core,top,bottom);
+    if(hasInsets&&placement&&(s.inset||(physical&&s.height*k<120))){
+      const insetTop=placement.top,insetH=placement.height,bodyH=insetH-95;
       // Uniform magnification only; changing range never changes the common calibration.
-      const available=Math.min((col-34)/(s.width*k),235/(s.height*k));
+      const available=Math.min((col-34)/(s.width*k),bodyH/(s.height*k));
       const zoom=physical?niceMagnification(available*.95):Math.min(s.inset,Math.floor(available*10)/10);
       if(zoom>1){
         const bw=Math.max(16,Math.min(s.width*k+12,col-20)),bh=Math.max(20,Math.min(s.height*k+12,plotH));
         const boxY=Math.max(top,Math.min(core-s.core[1]*k-6,bottom-bh));
-        parts.push(`<rect x="${cx-bw/2}" y="${boxY}" width="${bw}" height="${bh}" fill="none" stroke="${color}" stroke-width=".8"/><path d="M${cx-bw/2},${boxY+bh} L${left+10},${insetTop} M${cx+bw/2},${boxY+bh} L${left+col-10},${insetTop}" stroke="${color}" opacity=".35" stroke-dasharray="3 4" fill="none"/><rect x="${left+10}" y="${insetTop}" width="${col-20}" height="${insetH}" rx="5" fill="${p.bg}" stroke="${p.line}"/>`);
+        const fromY=placement.side==='below'?boxY+bh:boxY,toY=placement.side==='below'?insetTop:insetTop+insetH;
+        parts.push(`<rect x="${cx-bw/2}" y="${boxY}" width="${bw}" height="${bh}" fill="none" stroke="${color}" stroke-width=".8"/><path d="M${cx-bw/2},${fromY} L${left+10},${toY} M${cx+bw/2},${fromY} L${left+col-10},${toY}" stroke="${color}" opacity=".35" stroke-dasharray="3 4" fill="none"/><rect data-inset="${s.id}" x="${left+10}" y="${insetTop}" width="${col-20}" height="${insetH}" rx="5" fill="${p.bg}" stroke="${p.line}"/>`);
         text(cx,insetTop+25,(zoom>=1e4?`Enlarged ${scientific(zoom)} times`:`×${zoom} enlargement`),12,color);
-        const zk=k*zoom,bodyY=insetTop+44,bodyH=235;
+        const zk=k*zoom,bodyY=insetTop+44;
         const imageTop=bodyY+(bodyH-s.height*zk)/2,zy=imageTop+s.core[1]*zk;
         parts.push(image(s,cx,zy,zk));
         const barValue=10**Math.floor(Math.log10(125/(scale*zoom))),barW=barValue*scale*zoom;
         const bx=cx-barW/2,by=insetTop+insetH-33;
         parts.push(`<path d="M${bx},${by-4}v8 M${bx},${by}h${barW} M${bx+barW},${by-4}v8" fill="none" stroke="${color}"/>`);
         text(cx,by+21,physical?physicalBar(barValue):`${formatPower(barValue*1e9)} Rɢ`,11,color);
-      }else text(cx,insetTop+45,'Resolved at the shared scale',10,p.muted);
+      }
     }
     if(state.information){
       text(cx,footerY,s.name,14,color);text(cx,footerY+24,`Mʙʜ = ${s.massLabel}`,12,p.ink);

@@ -26,6 +26,16 @@ export function fitRange(sources,projection,units='rg'){
 }
 export function validRange(above,below,units='rg'){const max=units==='physical'?1e9:10000,min=units==='physical'?1e-12:.001;return Number.isFinite(above)&&Number.isFinite(below)&&above>=0&&below>=0&&above+below>=min&&above<=max&&below<=max;}
 export function tickStep(span){const rough=span/9;const base=10**Math.floor(Math.log10(rough));return [1,2,2.5,5,10].find(n=>n*base>=rough)*base;}
+export function insetPlacement(imageTop,imageBottom,core,plotTop=92,plotBottom=712){
+  // Keep insets inside the plot, on whichever side leaves more clear space.
+  const belowTop=Math.max(plotTop+8,imageBottom+30,core+38);
+  const aboveBottom=Math.min(plotBottom-8,imageTop-30,core-25);
+  const belowSpace=plotBottom-8-belowTop,aboveSpace=aboveBottom-(plotTop+8);
+  const side=belowSpace>=aboveSpace?'below':'above',space=Math.max(belowSpace,aboveSpace);
+  if(space<160)return null;
+  const height=Math.min(330,space);
+  return {side,height,top:side==='below'?belowTop:aboveBottom-height};
+}
 export function stateToHash(state){
   const p=new URLSearchParams({sources:state.order.filter(id=>state.selected.includes(id)).join(','),order:state.order.join(','),above:String(state.above),below:String(state.below),units:state.units,view:state.projection,theme:state.theme,insets:state.insets?'1':'0',info:state.information?'1':'0'});
   return '#'+p.toString();

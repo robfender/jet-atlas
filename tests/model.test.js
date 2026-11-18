@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
-import {DEFAULTS,freshState,rgPerPixel,unitsPerPixel,extent,fitRange,validRange,stateFromHash,stateToHash} from '../model.js';
+import {DEFAULTS,freshState,rgPerPixel,unitsPerPixel,extent,fitRange,validRange,insetPlacement,stateFromHash,stateToHash} from '../model.js';
 const sources=JSON.parse(readFileSync(new URL('../sources.json',import.meta.url))).sources;
 test('physical image scales reproduce the vetted montage',()=>{
   const expected={j1727:5628809.139839726,cygx1:1148744.8472807263,ngc6251:25797769.933249675,cena:15228391.238,m87:153451.02732463548};
@@ -55,4 +55,15 @@ test('physical unit links retain tiny parsec ranges and old links default to R_G
   const ids=sources.map(s=>s.id),state={...freshState(),units:'physical',above:.0001,below:.003};
   assert.deepEqual(stateFromHash(stateToHash(state),ids),state);
   assert.equal(stateFromHash('#above=3&below=6.2',ids).units,'rg');
+});
+
+test('insets stay inside the main plot and never cover the source or core',()=>{
+  for(const [imageTop,imageBottom,core] of [[280,320,294],[150,150.001,150],[430,460,450],[50,750,300],[130,500,300]]){
+    const p=insetPlacement(imageTop,imageBottom,core);
+    if(!p)continue;
+    assert.ok(p.top>=92&&p.top+p.height<=712);
+    if(p.side==='below')assert.ok(p.top>imageBottom&&p.top>core+25);
+    else assert.ok(p.top+p.height<imageTop&&p.top+p.height<core);
+  }
+  assert.equal(insetPlacement(0,800,300),null);
 });

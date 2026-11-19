@@ -239,7 +239,7 @@
       "inclinationLabel": "Outer lobes unknown",
       "eddington": "∼10⁻³",
       "notes": "Full giant-lobe system from the MWA image publicised by ICRAR. About 0.5 Mpc across in projection. Some compact background radio sources remain superposed inside the lobe aperture. The inner-jet angle is not applied to the outer lobes; the Eddington ratio describes the present nucleus.",
-      "calibration": "ICRAR/McKinley et al. MWA image registered to the same map in de Oliveira et al. (2025), Fig. 1: 100-kpc bar = 284 figure pixels = 153.0 pixels at the displayed 1200-pixel image height. Approx. 654 pc per asset pixel; inner-lobe midpoint defines the core. Rotated 6° counterclockwise. No outer-lobe deprojection.",
+      "calibration": "Calibrated directly to McKinley et al. (2022), Fig. 1: original declination ticks 2° = 202 pixels at 180-dpi page rendering. Registration using 71 compact-source peaks gives 178.77 pixels per 2° in the resized publicity image; at 3.8 Mpc, about 742 pc per asset pixel. Core located from the sky-coordinate grid. Rotated 6° counterclockwise; no outer-lobe deprojection. Supersedes the initial 2025-reproduction bar calibration (length correction +13.5%).",
       "references": [
         {
           "label": "McKinley et al. (2022) · MWA radio map",
@@ -250,10 +250,6 @@
           "url": "https://www.icrar.org/centaurus/"
         },
         {
-          "label": "de Oliveira et al. (2025), Fig. 1 · scale cross-check",
-          "url": "https://doi.org/10.1093/mnras/staf717"
-        },
-        {
           "label": "Borkar et al. (2021) · nuclear luminosity",
           "url": "https://doi.org/10.1093/mnras/staa3515"
         }
@@ -262,10 +258,10 @@
       "width": 369,
       "height": 857,
       "core": [
-        197.88187780718874,
-        426.7542079618885
+        197.1653506611143,
+        430.2561861356155
       ],
-      "rgPerPixelProjected": 248346967.49881524,
+      "rgPerPixelProjected": 281897243.72790164,
       "inclination": null,
       "objectId": "cena"
     },

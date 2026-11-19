@@ -2,14 +2,25 @@
   "width": 369,
   "height": 857,
   "core": [
-    197.88187780718874,
-    426.7542079618885
+    197.1653506611143,
+    430.2561861356155
   ],
-  "pcPerPixel": 653.6636979861539,
-  "rgPerPixelProjected": 248346967.49881524,
-  "registration": "20 matched compact-source peaks; similarity fit RMS 0.53 pixels at 1200-pixel publicity image height",
-  "bar": "de Oliveira et al. 2025 Fig. 1, 100 kpc bar spans 284 pixels in extracted image0; same McKinley 2022 MWA map",
-  "publicityToFigureScale": 0.5386755867599008,
+  "pcPerPixel": 741.9699811239425,
+  "rgPerPixelProjected": 281897243.72790164,
+  "registration": "71 matched compact-source peaks against the original McKinley2022 Fig1 sky-coordinate map; RMS0.54 pixels at publicity height1200",
+  "calibration": "Original Figure1 declination ticks -40,-42,-44,-46 degrees at rendered-page y452,654,856,1058 (180dpi); 2degrees=202pagepixels. Publicity/image scale 0.8850203474, so2degrees=178.7741102assetpixels; D3.8Mpc. Small-angle approximation; projection effects sub-percent.",
   "rotationDegrees": 6,
-  "coreApproximation": "Inner-lobe midpoint; approximate at MWA resolution."
+  "coreApproximation": "RA13h25m27.615s Dec-43d01m08.805s mapped approximately through original figure coordinate ticks and registration.",
+  "coreBeforeRotation": [
+    454.82134166770663,
+    603.3078964894046
+  ],
+  "registeredScale": 0.8850203473981523,
+  "similarityParameters": [
+    0.88502025927733,
+    0.00039493978479736107,
+    231.8362143688124,
+    165.1849045324947
+  ],
+  "correction": "Supersedes initial653.6637pc/pixel calibration transferred from deOliveira2025 bar; lengths increase13.5094percent."
 }

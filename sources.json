@@ -191,8 +191,8 @@
     },
     {
       "id": "cena",
-      "name": "Centaurus A",
-      "shortName": "Cen A",
+      "name": "Centaurus A (inner lobes)",
+      "shortName": "Cen A (inner)",
       "kind": "Active galactic nucleus",
       "band": "VLA · 1.4 GHz · contours",
       "color": "#5dedad",
@@ -222,7 +222,52 @@
         300
       ],
       "rgPerPixelProjected": 11665724.284277575,
-      "inclination": 50
+      "inclination": 50,
+      "objectId": "cena"
+    },
+    {
+      "id": "cena-outer",
+      "name": "Centaurus A (outer lobes)",
+      "shortName": "Cen A (outer)",
+      "kind": "Active galactic nucleus",
+      "band": "MWA · 185 MHz · outer lobes",
+      "color": "#5dedad",
+      "lightColor": "#168359",
+      "mass": 55000000.0,
+      "massLabel": "5.5 × 10⁷ M☉",
+      "distance": "3.8 Mpc",
+      "inclinationLabel": "Outer lobes unknown",
+      "eddington": "∼10⁻³",
+      "notes": "Full giant-lobe system from the MWA image publicised by ICRAR. About 0.5 Mpc across in projection. Some compact background radio sources remain superposed inside the lobe aperture. The inner-jet angle is not applied to the outer lobes; the Eddington ratio describes the present nucleus.",
+      "calibration": "ICRAR/McKinley et al. MWA image registered to the same map in de Oliveira et al. (2025), Fig. 1: 100-kpc bar = 284 figure pixels = 153.0 pixels at the displayed 1200-pixel image height. Approx. 654 pc per asset pixel; inner-lobe midpoint defines the core. Rotated 6° counterclockwise. No outer-lobe deprojection.",
+      "references": [
+        {
+          "label": "McKinley et al. (2022) · MWA radio map",
+          "url": "https://doi.org/10.1038/s41550-021-01553-3"
+        },
+        {
+          "label": "ICRAR · image: Ben McKinley and Connor Matherne",
+          "url": "https://www.icrar.org/centaurus/"
+        },
+        {
+          "label": "de Oliveira et al. (2025), Fig. 1 · scale cross-check",
+          "url": "https://doi.org/10.1093/mnras/staf717"
+        },
+        {
+          "label": "Borkar et al. (2021) · nuclear luminosity",
+          "url": "https://doi.org/10.1093/mnras/staa3515"
+        }
+      ],
+      "image": "assets/cena-outer-lobes.png",
+      "width": 369,
+      "height": 857,
+      "core": [
+        197.88187780718874,
+        426.7542079618885
+      ],
+      "rgPerPixelProjected": 248346967.49881524,
+      "inclination": null,
+      "objectId": "cena"
     },
     {
       "id": "m87",

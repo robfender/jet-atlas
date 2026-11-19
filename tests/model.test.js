@@ -107,3 +107,12 @@ test('scroll zoom is off by default and is preserved in share links',()=>{
   const state={...freshState(),scrollZoom:true};
   assert.deepEqual(stateFromHash(stateToHash(state),ids),state);
 });
+
+test('Cen A outer lobes retain the published 100-kpc calibration and stay projected',()=>{
+  const outer=sources.find(s=>s.id==='cena-outer'),inner=sources.find(s=>s.id==='cena');
+  const registeredBarPixels=284*Math.hypot(.538675349,-.000506113477);
+  assert.ok(Math.abs(unitsPerPixel(outer,'projected','physical')*registeredBarPixels-100000)<1e-6);
+  assert.equal(rgPerPixel(outer,'projected'),rgPerPixel(outer,'deprojected'));
+  assert.equal(outer.objectId,inner.objectId);
+  assert.equal(outer.mass,inner.mass);
+});

@@ -1,6 +1,6 @@
 export const BILLION = 1e9;
 export const RG_PC_PER_SOLAR_MASS = 4.785560552051379e-14;
-export const DEFAULTS = Object.freeze({selected:['j1727','cygx1','ngc6251','cena','m87'],order:['j1727','cygx1','1e1740','ngc6251','ngc6251-lobes','cena','m87','alcyoneus'],above:3,below:6.2,units:'rg',projection:'deprojected',theme:'dark',insets:true,information:true,scrollZoom:false});
+export const DEFAULTS = Object.freeze({selected:['j1727','cygx1','ngc6251','cena','m87'],order:['j1727','cygx1','1e1740','ngc6251','ngc6251-lobes','cena','cena-outer','m87','alcyoneus'],above:3,below:6.2,units:'rg',projection:'deprojected',theme:'dark',insets:true,information:true,scrollZoom:false});
 export function freshState(){return structuredClone(DEFAULTS);}
 export function rgPerPixel(source,projection){
   return source.rgPerPixelProjected / (projection==='deprojected' && source.inclination!==null ? Math.sin(source.inclination*Math.PI/180) : 1);

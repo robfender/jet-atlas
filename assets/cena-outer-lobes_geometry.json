@@ -1,0 +1,15 @@
+{
+  "width": 369,
+  "height": 857,
+  "core": [
+    197.88187780718874,
+    426.7542079618885
+  ],
+  "pcPerPixel": 653.6636979861539,
+  "rgPerPixelProjected": 248346967.49881524,
+  "registration": "20 matched compact-source peaks; similarity fit RMS 0.53 pixels at 1200-pixel publicity image height",
+  "bar": "de Oliveira et al. 2025 Fig. 1, 100 kpc bar spans 284 pixels in extracted image0; same McKinley 2022 MWA map",
+  "publicityToFigureScale": 0.5386755867599008,
+  "rotationDegrees": 6,
+  "coreApproximation": "Inner-lobe midpoint; approximate at MWA resolution."
+}

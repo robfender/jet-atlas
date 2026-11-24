@@ -8,7 +8,7 @@
   <title>Black hole low Eddington / hard state jets across the mass scale</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=6">
-  <script type="module" src="app.js?v=9"></script>
+  <script type="module" src="app.js?v=10"></script>
 </head>
 <body>
   <header class="masthead">
@@ -36,7 +36,7 @@
           <div class="field-label">Distance convention</div>
           <div class="segmented" role="group" aria-label="Distance convention"><button type="button" id="deprojected" aria-pressed="true">Deprojected</button><button type="button" id="projected" aria-pressed="false">Projected</button></div>
           <p id="projection-note" class="hint">Adopted inclinations; Unknown viewing angles stay projected.</p>
-          <div class="range-grid"><label>Above core<input id="range-above" type="number" min="0" max="10000" step="any" value="3"><span class="range-unit">× 10⁹ R<sub>G</sub></span></label><label>Below core<input id="range-below" type="number" min="0" max="10000" step="any" value="6.2"><span class="range-unit">× 10⁹ R<sub>G</sub></span></label></div>
+          <div class="range-grid"><label>Above core<input id="range-above" type="number" min="0" max="100000" step="any" value="3"><span class="range-unit">× 10⁹ R<sub>G</sub></span></label><label>Below core<input id="range-below" type="number" min="0" max="100000" step="any" value="6.2"><span class="range-unit">× 10⁹ R<sub>G</sub></span></label></div>
           <p id="range-error" role="alert" class="error" hidden></p>
           <button type="button" id="fit" class="wide-button">↔ Fit selected sources</button>
         </section>

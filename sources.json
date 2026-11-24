@@ -117,6 +117,41 @@
       "inclination": null
     },
     {
+      "id": "grs1758",
+      "name": "GRS 1758−258",
+      "shortName": "GRS 1758−258",
+      "kind": "Stellar-mass black-hole candidate",
+      "band": "MeerKAT · 1.28 GHz · lobes",
+      "color": "#35d6c9",
+      "lightColor": "#087e79",
+      "mass": 10.0,
+      "massLabel": "10 M☉ (adopted)",
+      "distance": "8.5 kpc (adopted)",
+      "inclination": 61,
+      "inclinationLabel": "61° ± 2° (adopted)",
+      "eddington": "∼0.01–0.05 · hard state",
+      "image": "assets/grs1758.png",
+      "width": 396,
+      "height": 1775,
+      "core": [
+        178.8884485863258,
+        1019.1596622012491
+      ],
+      "rgPerPixelProjected": 8491457364.932526,
+      "notes": "MeerKAT image of the parsec-scale jet/ISM interaction lobes and radio core. The northern lobe is oriented downward for comparison. Mariani et al. quote deprojected core-to-lobe distances of 3.36 pc north and 4.41 pc south (about 7.8 pc end to end). The adopted 61° comes from X-ray disc reflection and assumes disc–jet alignment. The 10-solar-mass black hole is assumed, not dynamically measured. The Eddington range characterises representative hard-state X-ray observations, not the lobe-averaged power or a simultaneous 2024 measurement. Colours and source apertures are illustrative.",
+      "calibration": "Original Mariani et al. (2025), Fig. 1b embedded map, 1791 × 2048 pixels. Declination ticks 30 arcsec ≈ 304.23 pixels; independently calibrated RA agrees to 0.08%. Projected scale 0.0986101 arcsec/pixel = 0.00406364 pc/pixel at 8.5 kpc. Core from RA 18h01m12.400s, Dec −25°44′36.10″. Source apertures guided by Fig. 2 omit unrelated field sources. Rotated 172° counterclockwise, no geometric stretching. Projected R_G calibration uses 10 M☉; optional 61° deprojection is applied once.",
+      "references": [
+        {
+          "label": "Mariani et al. (2025) · MeerKAT image and lobes",
+          "url": "https://doi.org/10.1051/0004-6361/202556290"
+        },
+        {
+          "label": "Bhuvana et al. (2023) · disc inclination and nuclear luminosity",
+          "url": "https://doi.org/10.1093/mnras/stad446"
+        }
+      ]
+    },
+    {
       "id": "ngc6251",
       "name": "NGC 6251 (jet)",
       "shortName": "NGC 6251 (jet)",

@@ -1,0 +1,231 @@
+{
+  "paper": "Mariani et al.2025 A&A704 A239, DOI10.1051/0004-6361/202556290",
+  "source_image": "Fig1b original embedded1791x2048pixel map; observationsApr4,Jul5,Aug15 2024",
+  "image_geometry_isotropic": true,
+  "pixel_arcsec_dec": 0.09861006761833208,
+  "pixel_arcsec_ra": 0.09868384821418862,
+  "axis_scale_relative_agreement": 0.0007482055092193907,
+  "declination_ticks_y": [
+    241,
+    545,
+    850,
+    1154,
+    1458,
+    1762
+  ],
+  "declination_ticks_arcsec_south_of_minus25_43_30": [
+    0,
+    30,
+    60,
+    90,
+    120,
+    150
+  ],
+  "RA_ticks_x": [
+    167,
+    441,
+    715,
+    988,
+    1263,
+    1536
+  ],
+  "RA_seconds": [
+    18,
+    16,
+    14,
+    12,
+    10,
+    8
+  ],
+  "native_core_xy": [
+    933.8152380952376,
+    911.4121904761905
+  ],
+  "core_sky": "18h01m12.400s -25d44m36.10s J2000, from Mariani",
+  "width": 396,
+  "height": 1775,
+  "core": [
+    178.8884485863258,
+    1019.1596622012491
+  ],
+  "rotation_counterclockwise_degrees": 172.0,
+  "D_kpc": 8.5,
+  "mass_Msun_adopted": 10.0,
+  "inclination_deg_adopted": 61.0,
+  "pc_per_pixel_projected": 0.004063638339504724,
+  "rgPerPixelProjected": 8491457364.932526,
+  "preview_width_for_apertures": 850,
+  "aperture_polygons_preview": [
+    [
+      [
+        355,
+        83
+      ],
+      [
+        427,
+        84
+      ],
+      [
+        453,
+        135
+      ],
+      [
+        462,
+        200
+      ],
+      [
+        490,
+        270
+      ],
+      [
+        505,
+        335
+      ],
+      [
+        465,
+        305
+      ],
+      [
+        442,
+        269
+      ],
+      [
+        413,
+        277
+      ],
+      [
+        378,
+        245
+      ],
+      [
+        350,
+        220
+      ],
+      [
+        343,
+        160
+      ]
+    ],
+    [
+      [
+        397,
+        502
+      ],
+      [
+        421,
+        512
+      ],
+      [
+        428,
+        540
+      ],
+      [
+        413,
+        562
+      ],
+      [
+        411,
+        590
+      ],
+      [
+        445,
+        593
+      ],
+      [
+        426,
+        626
+      ],
+      [
+        427,
+        653
+      ],
+      [
+        461,
+        708
+      ],
+      [
+        485,
+        740
+      ],
+      [
+        515,
+        727
+      ],
+      [
+        552,
+        732
+      ],
+      [
+        545,
+        763
+      ],
+      [
+        562,
+        784
+      ],
+      [
+        550,
+        806
+      ],
+      [
+        555,
+        840
+      ],
+      [
+        538,
+        862
+      ],
+      [
+        551,
+        887
+      ],
+      [
+        536,
+        913
+      ],
+      [
+        501,
+        908
+      ],
+      [
+        478,
+        867
+      ],
+      [
+        465,
+        824
+      ],
+      [
+        450,
+        791
+      ],
+      [
+        418,
+        750
+      ],
+      [
+        396,
+        710
+      ],
+      [
+        382,
+        669
+      ],
+      [
+        383,
+        614
+      ],
+      [
+        386,
+        551
+      ]
+    ]
+  ],
+  "aperture_feather_native_pixels": 8,
+  "display": "Published magma colourbar inverse torelativelevel; alpha=((level-.32)/.68)^.8 clipped0..1. Source apertures based on author Fig2 regions; corecircle52nativepixelradius. Not a calibrated/significance-thresholded flux map. No physical bridge inferred across blank masked gaps.",
+  "native_original_dimensions": [
+    1791,
+    2048
+  ],
+  "licence": "CCBY4.0 Mariani et al.2025; colours and rotation modified; author/publisher image rights retained."
+}

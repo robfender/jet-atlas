@@ -1,4 +1,4 @@
-import {freshState,unitsPerPixel,extent,fitRange,validRange,zoomRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=9';
+import {freshState,unitsPerPixel,extent,fitRange,validRange,zoomRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=10';
 
 const $=id=>document.getElementById(id);
 const escapeXML=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -21,7 +21,7 @@ function commit(){
   $('units-rg').setAttribute('aria-pressed',String(!physical));
   $('units-physical').setAttribute('aria-pressed',String(physical));
   for(const el of document.querySelectorAll('.range-unit'))el.innerHTML=physical?'pc':'× 10⁹ R<sub>G</sub>';
-  for(const id of ['range-above','range-below'])$(id).max=physical?'1000000000':'10000';
+  for(const id of ['range-above','range-below'])$(id).max=physical?'1000000000':'100000';
   document.querySelector('.definition').innerHTML=physical?'<span>THE UNIT</span><strong>Physical distance</strong><p>Parsecs: 1 pc ≈ 206,265 AU. Each image uses its own black-hole mass to convert from R<sub>G</sub>.</p>':'<span>THE UNIT</span><strong>R<sub>G</sub> = GM / c²</strong><p>Distance measured in the natural length scale of each black hole.</p>';
   $('method-note').textContent=physical?'Common physical distance in parsecs. Labelled core markers indicate jets smaller than one pixel; marker sizes do not represent jet sizes. Colours and brightness are illustrative.':'Images share a scale in gravitational radii, not a brightness scale. Colours are illustrative; different observations have different resolutions and sensitivities.';
   $('deprojected').setAttribute('aria-pressed',String(state.projection==='deprojected'));
@@ -195,14 +195,14 @@ async function exportFigure(format){
 }
 async function init(){
   try{
-    const response=await fetch('sources.json?v=9');if(!response.ok)throw Error('Could not load source catalogue');
+    const response=await fetch('sources.json?v=10');if(!response.ok)throw Error('Could not load source catalogue');
     sources=(await response.json()).sources;
     document.querySelector('.edition').textContent=`01 / ${sources.length} VIEWS`;
     const objectCount=new Set(sources.map(s=>s.objectId||s.id)).size;
     document.querySelector('.lede').textContent=`Real radio images. ${sources.length} views of ${objectCount} black holes. Compare gravitational radii or physical size.`;
     state=stateFromHash(location.hash,sources.map(s=>s.id));
     // Preload every selected image before allowing an export.
-    await Promise.all(sources.map(s=>{const image=new Image();image.src=s.image;return image.decode();}));
+    await Promise.all(sources.map(s=>{const image=new Image();image.src=s.image;return image.decode().catch(error=>{throw Error('Could not load image for '+s.name+' ('+s.image+')',{cause:error});});}));
     bind();commit();
   }catch(error){console.error(error);$('figure').innerHTML='<div class="empty"><strong>The atlas could not load.</strong><p>Refresh the page to try again.</p></div>';}
 }

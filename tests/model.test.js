@@ -24,7 +24,7 @@ test('share links preserve choices, order, empty selection, theme and numeric ra
 });
 test('malformed URL settings are bounded and unknown source IDs ignored',()=>{
   const s=stateFromHash('#sources=bogus,m87,m87&above=-1&below=0&theme=no&view=no&order=m87,m87,bogus',sources.map(s=>s.id));assert.deepEqual(s.selected,['m87']);assert.equal(s.order.length,sources.length);assert.equal(s.above,DEFAULTS.above);assert.equal(s.theme,'dark');
-  for(const [a,b] of [[-1,2],[0,0],[NaN,1],[1,Infinity],[10001,1]])assert.equal(validRange(a,b),false);
+  for(const [a,b] of [[-1,2],[0,0],[NaN,1],[1,Infinity],[100001,1]])assert.equal(validRange(a,b),false);
 });
 test('catalogue images and their core coordinates are valid',()=>{
   assert.equal(new Set(sources.map(s=>s.id)).size,sources.length);
@@ -97,7 +97,7 @@ test('button zoom narrows and widens the range around the same core fraction',()
     assert.ok(Math.abs(inside.above/(inside.above+inside.below)-3/9.2)<1e-12);
     assert.deepEqual(zoomRange(inside.above,inside.below,1.25,units),initial);
   }
-  assert.equal(zoomRange(10000,10000,1.25),null);
+  assert.equal(zoomRange(100000,100000,1.25),null);
   assert.equal(zoomRange(3,6.2,0),null);
 });
 test('scroll zoom is off by default and is preserved in share links',()=>{
@@ -115,4 +115,19 @@ test('Cen A outer lobes recover the original sky-coordinate calibration and stay
   assert.equal(rgPerPixel(outer,'projected'),rgPerPixel(outer,'deprojected'));
   assert.equal(outer.objectId,inner.objectId);
   assert.equal(outer.mass,inner.mass);
+});
+
+test('GRS1758 recovers the celestial grid scale and deprojects once',()=>{
+  const s=sources.find(s=>s.id==='grs1758');
+  const g=JSON.parse(readFileSync(new URL('../assets/grs1758_geometry.json',import.meta.url)));
+  // Original map: five 30-arcsec intervals span 1521 native pixels.
+  const measuredArcsecPerPixel=150/1521;
+  assert.ok(Math.abs(unitsPerPixel(s,'projected','physical')/(8500*measuredArcsecPerPixel/206264.806247)-1)<2e-4);
+  assert.ok(Math.abs(g.pixel_arcsec_ra/g.pixel_arcsec_dec-1)<.002);
+  assert.ok(Math.abs(rgPerPixel(s,'deprojected')/rgPerPixel(s,'projected')-1/Math.sin(61*Math.PI/180))<1e-12);
+  assert.equal(s.mass,10);
+  for(const mode of ['projected','deprojected']){
+    const range=fitRange([s],mode);assert.ok(validRange(range.above,range.below));
+    const ex=extent(s,mode);assert.ok(range.above>=ex.above&&range.below>=ex.below);
+  }
 });

@@ -1,4 +1,4 @@
-import {freshState,unitsPerPixel,extent,fitRange,validRange,zoomRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=10';
+import {freshState,unitsPerPixel,extent,fitRange,validRange,zoomRange,tickStep,insetPlacement,stateToHash,stateFromHash} from './model.js?v=11';
 
 const $=id=>document.getElementById(id);
 const escapeXML=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -195,7 +195,7 @@ async function exportFigure(format){
 }
 async function init(){
   try{
-    const response=await fetch('sources.json?v=10');if(!response.ok)throw Error('Could not load source catalogue');
+    const response=await fetch('sources.json?v=11');if(!response.ok)throw Error('Could not load source catalogue');
     sources=(await response.json()).sources;
     document.querySelector('.edition').textContent=`01 / ${sources.length} VIEWS`;
     const objectCount=new Set(sources.map(s=>s.objectId||s.id)).size;

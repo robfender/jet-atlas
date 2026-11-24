@@ -155,7 +155,7 @@
       303
     ],
     "rgPerPixelProjected": 10501398144.22782,
-    "inclination": null,
+    "inclination": 55,
     "preparation": {
       "reference": "Luque-Escamilla2015Fig2, 1992panel; discoveryMirabel1992",
       "source_embedded_raster_dimensions": [
@@ -178,7 +178,7 @@
       "pc_per_native_pixel": 0.005025507670040221,
       "distance_kpc_adopted": 8.5,
       "mass_Msun_adopted": 10,
-      "inclination": "unknown jet inclination, retain projection",
+      "inclination": "55deg adopted X-ray disc angle; deprojection assumes disc–jet alignment",
       "aperture_polygon_native_pixels": [
         [
           286,

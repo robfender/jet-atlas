@@ -87,11 +87,11 @@
       "mass": 10,
       "massLabel": "10 M☉ (adopted)",
       "distance": "8.5 kpc (adopted)",
-      "inclinationLabel": "Jet angle unknown · projected",
+      "inclinationLabel": "55° ± 1° · disc–jet alignment assumed",
       "eddington": "∼10⁻² · hard state",
       "inset": 5,
-      "notes": "The “Great Annihilator”, the original microquasar discovered by Mirabel et al. (1992). The image is the April 1992 epoch reprocessed by Luque-Escamilla et al. (2015), showing the arcminute-scale jet/lobe structure. Mass and distance are adopted comparison values, not dynamical measurements. The jet inclination is uncertain, so its size stays projected in both modes. The northern lobe is rotated downward.",
-      "calibration": "Luque-Escamilla et al. (2015), Fig. 2, left 1992 panel. Declination ticks: 15 arcsec = 123 embedded-raster pixels; native angular pixel size 0.121951 arcsec. At the adopted 8.5 kpc this is 0.0050255 pc/pixel. Nucleus is the central radio-contour peak, within ~4 pixels of the quoted position. Only the jet contour aperture is retained; axes, beam and separated noise islands are removed. The 2015 paper discusses a model-dependent ~5-kpc distance alternative. Approximate Eddington ratio is representative of later hard-state measurements, not simultaneous with the 1992 radio image.",
+      "notes": "The “Great Annihilator”, the original microquasar discovered by Mirabel et al. (1992). The image is the April 1992 epoch reprocessed by Luque-Escamilla et al. (2015), showing the arcminute-scale jet/lobe structure. Mass and distance are adopted comparison values, not dynamical measurements. The adopted 55° ± 1° is the inner-disc inclination inferred from X-ray reflection by Bhuvana et al. (2023). Applying it to these large-scale jets assumes disc–jet alignment; it is not a direct jet-inclination measurement. The deprojected view applies this assumption, giving an approximate full extent of 3.4 pc at 8.5 kpc. The northern lobe is rotated downward.",
+      "calibration": "Luque-Escamilla et al. (2015), Fig. 2, left 1992 panel. Declination ticks: 15 arcsec = 123 embedded-raster pixels; native angular pixel size 0.121951 arcsec. At the adopted 8.5 kpc this is 0.0050255 pc/pixel. Nucleus is the central radio-contour peak, within ~4 pixels of the quoted position. Only the jet contour aperture is retained; axes, beam and separated noise islands are removed. The 2015 paper discusses a model-dependent ~5-kpc distance alternative. Approximate Eddington ratio is representative of later hard-state measurements, not simultaneous with the 1992 radio image. Adopted jet inclination 55° assumes alignment with the X-ray reflection disc. The angular/projected calibration is unchanged; deprojection is applied once, by 1/sin(55°).",
       "references": [
         {
           "label": "Mirabel et al. (1992) · discovery",
@@ -102,7 +102,7 @@
           "url": "https://doi.org/10.1051/0004-6361/201527238"
         },
         {
-          "label": "Bhuvana et al. (2023) · hard-state luminosity",
+          "label": "Bhuvana et al. (2023) · disc inclination and hard-state luminosity",
           "url": "https://arxiv.org/abs/2302.03273"
         }
       ],
@@ -114,7 +114,7 @@
         303
       ],
       "rgPerPixelProjected": 10501398144.22782,
-      "inclination": null
+      "inclination": 55
     },
     {
       "id": "grs1758",
@@ -128,7 +128,7 @@
       "massLabel": "10 M☉ (adopted)",
       "distance": "8.5 kpc (adopted)",
       "inclination": 61,
-      "inclinationLabel": "61° ± 2° (adopted)",
+      "inclinationLabel": "61° ± 2° · disc–jet alignment assumed",
       "eddington": "∼0.01–0.05 · hard state",
       "image": "assets/grs1758.png",
       "width": 396,
@@ -138,7 +138,7 @@
         1019.1596622012491
       ],
       "rgPerPixelProjected": 8491457364.932526,
-      "notes": "MeerKAT image of the parsec-scale jet/ISM interaction lobes and radio core. The northern lobe is oriented downward for comparison. Mariani et al. quote deprojected core-to-lobe distances of 3.36 pc north and 4.41 pc south (about 7.8 pc end to end). The adopted 61° comes from X-ray disc reflection and assumes disc–jet alignment. The 10-solar-mass black hole is assumed, not dynamically measured. The Eddington range characterises representative hard-state X-ray observations, not the lobe-averaged power or a simultaneous 2024 measurement. Colours and source apertures are illustrative.",
+      "notes": "MeerKAT image of the parsec-scale jet/ISM interaction lobes and radio core. The northern lobe is oriented downward for comparison. Mariani et al. quote deprojected core-to-lobe distances of 3.36 pc north and 4.41 pc south (about 7.8 pc end to end). The adopted 61° ± 2° is the inner-disc inclination from X-ray reflection. Applying it to the large-scale jets assumes disc–jet alignment, just as for 1E 1740.7−2942; it is not a direct jet-inclination measurement. The 10-solar-mass black hole is assumed, not dynamically measured. The Eddington range characterises representative hard-state X-ray observations, not the lobe-averaged power or a simultaneous 2024 measurement. Colours and source apertures are illustrative.",
       "calibration": "Original Mariani et al. (2025), Fig. 1b embedded map, 1791 × 2048 pixels. Declination ticks 30 arcsec ≈ 304.23 pixels; independently calibrated RA agrees to 0.08%. Projected scale 0.0986101 arcsec/pixel = 0.00406364 pc/pixel at 8.5 kpc. Core from RA 18h01m12.400s, Dec −25°44′36.10″. Source apertures guided by Fig. 2 omit unrelated field sources. Rotated 172° counterclockwise, no geometric stretching. Projected R_G calibration uses 10 M☉; optional 61° deprojection is applied once.",
       "references": [
         {

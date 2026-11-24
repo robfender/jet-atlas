@@ -72,7 +72,8 @@ test('new extended sources recover their documented physical calibrations',()=>{
   const ann=sources.find(s=>s.id==='1e1740'),lobes=sources.find(s=>s.id==='ngc6251-lobes');
   assert.ok(Math.abs(unitsPerPixel(ann,'projected','physical')-8500/206264.806247*15/123)<1e-10);
   assert.ok(Math.abs(unitsPerPixel(lobes,'projected','physical')-3259.536253157527)<1e-5);
-  for(const s of [ann,lobes])assert.equal(rgPerPixel(s,'projected'),rgPerPixel(s,'deprojected'));
+  assert.equal(rgPerPixel(lobes,'projected'),rgPerPixel(lobes,'deprojected'));
+  assert.ok(Math.abs(rgPerPixel(ann,'deprojected')/rgPerPixel(ann,'projected')-1/Math.sin(55*Math.PI/180))<1e-12);
   assert.ok(ann.height*unitsPerPixel(ann,'projected','physical')>2.5);
   assert.ok(lobes.height*unitsPerPixel(lobes,'projected','physical')>1.7e6);
 });

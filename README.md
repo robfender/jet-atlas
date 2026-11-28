@@ -89,3 +89,5 @@ Added the MeerKAT 1.28-GHz parsec-scale lobe/core image from Mariani et al. (202
 
 Y-axis labels use presentation-size typography in both the live figure and exports:28px units,22px tick values, full foreground contrast, and a wider adaptive margin for long labels.
 Source-information text is50% larger (names21px, masses18px, inclinations/Eddington ratios16.5px, references13.5px), with measured wrapping and aligned rows to prevent overlap between source columns.
+
+All figure text is now explicitly sized through `figureType` in `app.js`. Source headings25.5px, observing-band labels15px, projection notes12px, tiny-jet/clipping annotations13.5px, inset magnifications18px and inset scale labels16.5px complete the projector update. Each text style is at least50% larger than the original pre-projector figure. Source headings and band labels wrap within each column; header height adapts without changing the shared image scale.

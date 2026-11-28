@@ -49,27 +49,53 @@ function renderFigure(){
   $('view-label').innerHTML=(state.projection==='deprojected'?'Deprojected':'Projected')+(physical?' · physical size (pc)':' · shared R<sub>G</sub> scale');
   $('figure-summary').textContent=`${list.length} source${list.length===1?'':'s'} · −${formatNumber(state.above)} to +${formatNumber(state.below)} ${unit}`;
   if(!list.length){$('figure').innerHTML='<div class="empty"><strong>A universe of scales.</strong><p>Select a source to start comparing.</p></div>';return;}
-  const col=270,W=95+list.length*col,top=92,plotH=620,bottom=top+plotH;
+  // Reserve enough room for presentation-sized labels, including wide pc ranges.
+  const axisWidth=Math.max(190,Math.ceil(Math.max(formatNumber(-state.above).length,formatNumber(state.below).length)*14+40));
+  const axisX=axisWidth-28;
+  const col=270,W=axisWidth+list.length*col,top=92,plotH=620,bottom=top+plotH;
   const scale=plotH/(state.above+state.below),core=top+state.above*scale;
   const hasInsets=state.insets;
   const footerY=bottom+75;
-  const H=state.information?footerY+135:bottom+45;
+  // Measure footer wrapping so the larger presentation text stays in its column.
+  const measure=document.createElement('canvas').getContext('2d');
+  const wrapFooter=(value,size)=>{
+    measure.font=`${size}px Arial,Helvetica,sans-serif`;
+    const lines=[];let line='';
+    for(const word of String(value).split(/\s+/)){
+      const next=line?`${line} ${word}`:word;
+      if(line&&measure.measureText(next).width>col-24){lines.push(line);line=word;}else line=next;
+    }
+    if(line)lines.push(line);return lines;
+  };
+  const footerSizes=[21,18,16.5,16.5,13.5,13.5],footerLines=[27,24,22,22,19,19];
+  const footers=list.map(s=>[
+    s.name,`Mʙʜ = ${s.massLabel}`,
+    s.id==='m87'?'Inner jet 17.2°; halo i unknown':`i = ${s.inclinationLabel}`,
+    `Lbol / LEdd ${s.eddington}`,...s.references.slice(0,2).map(r=>r.label.split(' · ')[0])
+  ].map((value,row)=>wrapFooter(value,footerSizes[row])));
+  let footerHeight=0;const footerOffsets=footerSizes.map((_,row)=>{
+    const offset=footerHeight;
+    footerHeight+=Math.max(...footers.map(rows=>rows[row]?.length||0))*footerLines[row]+8;
+    return offset;
+  });
+  const H=state.information?footerY+footerHeight+10:bottom+45;
   const parts=[`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="plot-title plot-desc"><title id="plot-title">Black hole low Eddington / hard state jets across the mass scale</title><desc id="plot-desc">${escapeXML(list.map(s=>s.name).join(', '))}. Shared size scale: ${unit}. ${state.projection} distances; Views with unknown inclinations remain projected. R_G equals GM over c squared. Core markers are not jet sizes. Colours do not compare brightness.</desc><defs><filter id="light-emission" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.58"/><feFuncG type="linear" slope="0.58"/><feFuncB type="linear" slope="0.58"/><feFuncA type="gamma" amplitude="1" exponent="0.6" offset="0"/></feComponentTransfer></filter></defs><rect width="${W}" height="${H}" fill="${p.bg}"/><g font-family="Arial,Helvetica,sans-serif">`];
   const text=(x,y,str,size=12,color=p.muted,anchor='middle',extra='')=>parts.push(`<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="${size}" fill="${color}" ${extra}>${escapeXML(str)}</text>`);
   const image=(s,x,y,k)=>{
     const w=s.width*k,h=s.height*k;
     return `<image data-source="${s.id}" x="${x-s.core[0]*k}" y="${y-s.core[1]*k}" width="${w}" height="${h}" href="${s.image}" ${state.theme==='light'?'filter="url(#light-emission)"':''}/>`;
   };
-  parts.push(`<line x1="78" x2="${W-18}" y1="${core}" y2="${core}" stroke="${p.muted}" stroke-width=".7" stroke-dasharray="2 6" opacity=".55"/>`);
-  text(42,35,physical?'pc':'10⁹ Rɢ',13,p.ink);text(22,core-10,'CORE',8,p.muted,'start');
-  parts.push(`<line x1="65" x2="65" y1="${top}" y2="${bottom}" stroke="${p.muted}" stroke-width="1"/>`);
+  parts.push(`<line x1="${axisX+12}" x2="${W-18}" y1="${core}" y2="${core}" stroke="${p.muted}" stroke-width=".7" stroke-dasharray="2 6" opacity=".55"/>`);
+  text(axisX,35,physical?'pc':'10⁹ Rɢ',28,p.ink,'end','font-weight="600" data-axis-units="true"');
+  text(18,core-16,'CORE',14,p.ink,'start','font-weight="600"');
+  parts.push(`<line x1="${axisX}" x2="${axisX}" y1="${top}" y2="${bottom}" stroke="${p.ink}" stroke-width="1.5" opacity=".75"/>`);
   const step=tickStep(state.above+state.below);
   for(let i=Math.ceil(-state.above/step);i<=Math.floor(state.below/step);i++){
     const val=i*step,y=core+val*scale,label=formatNumber(Number(val.toPrecision(5))).replace('-','−');
-    parts.push(`<line x1="60" x2="70" y1="${y}" y2="${y}" stroke="${p.muted}"/>`);text(52,y+4,label,11,p.muted,'end');
+    parts.push(`<line x1="${axisX-7}" x2="${axisX+7}" y1="${y}" y2="${y}" stroke="${p.ink}" stroke-width="1.5"/>`);text(axisX-16,y+7,label,22,p.ink,'end','font-weight="600" data-axis-tick="true"');
   }
   list.forEach((s,i)=>{
-    const left=95+i*col,cx=left+col/2,color=sourceColor(s),k=unitsPerPixel(s,state.projection,state.units)*scale;
+    const left=axisWidth+i*col,cx=left+col/2,color=sourceColor(s),k=unitsPerPixel(s,state.projection,state.units)*scale;
     text(cx,35,s.name,17,color);text(cx,58,s.band,10);
     if(s.inclination===null)text(cx,75,s.id==='m87'?'PROJECTED HALO':'PROJECTED',8,p.muted);
     parts.push(`<defs><clipPath id="plot-${s.id}"><rect x="${left+5}" y="${top}" width="${col-10}" height="${plotH}"/></clipPath></defs>`);
@@ -104,10 +130,10 @@ function renderFigure(){
       }
     }
     if(state.information){
-      text(cx,footerY,s.name,14,color);text(cx,footerY+24,`Mʙʜ = ${s.massLabel}`,12,p.ink);
-      text(cx,footerY+46,s.id==='m87'?'Inner jet 17.2°; halo i unknown':`i = ${s.inclinationLabel}`,11,p.muted);
-      text(cx,footerY+68,`Lbol / LEdd ${s.eddington}`,11,p.ink);
-      s.references.slice(0,2).forEach((r,j)=>text(cx,footerY+91+j*16,r.label.split(' · ')[0],9,p.muted));
+      const colors=[color,p.ink,p.muted,p.ink,p.muted,p.muted];
+      footers[i].forEach((lines,row)=>lines.forEach((line,j)=>
+        text(cx,footerY+footerOffsets[row]+j*footerLines[row],line,footerSizes[row],colors[row])
+      ));
     }
   });
   parts.push('</g></svg>');$('figure').innerHTML=parts.join('');

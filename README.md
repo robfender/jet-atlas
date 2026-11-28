@@ -86,3 +86,6 @@ Added the MeerKAT 1.28-GHz parsec-scale lobe/core image from Mariani et al. (202
 ## Matched microquasar inclination assumptions (24 November 2026)
 
 1E 1740.7−2942 now adopts i = 55° ± 1° and GRS 1758−258 adopts i = 61° ± 2°, from Bhuvana et al. (2023) X-ray disc-reflection modelling. Both source labels and notes explicitly state that their deprojections assume disc–jet alignment. These are disc angles applied to the large-scale jets, not direct jet inclination measurements. Projected mode retains the original angular/distance scales; deprojected mode divides by sin(i) once. The approximate end-to-end sizes at D = 8.5 kpc are3.4pc and7.8pc, respectively.
+
+Y-axis labels use presentation-size typography in both the live figure and exports:28px units,22px tick values, full foreground contrast, and a wider adaptive margin for long labels.
+Source-information text is50% larger (names21px, masses18px, inclinations/Eddington ratios16.5px, references13.5px), with measured wrapping and aligned rows to prevent overlap between source columns.
